@@ -2,18 +2,19 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 18:48:43
+LastEditTime: 2022-05-08 22:32:25
 Description: 
 '''
 
+from typing import overload
 from ._servo import ECServo
-from ._info import ECInfo
-from ._kinematics import ECKinematics
-from ._move import ECMove
-from ._moveml import ECMoveML
-from ._movett import ECMoveTT
-from ._profinet import ECProfinet
-from ._var import ECVar
+from elite._info import ECInfo
+from elite._kinematics import ECKinematics
+from elite._move import ECMove
+from elite._moveml import ECMoveML
+from elite._movett import ECMoveTT
+from elite._profinet import ECProfinet
+from elite._var import ECVar
 
 from loguru import logger
 import time
@@ -29,25 +30,28 @@ __recommended_min_robot_version = "3.0.0"
 
 class EC(ECServo, ECInfo, ECKinematics, ECMove, ECMoveML, ECMoveTT, ECProfinet, ECVar):
     
-    def __init__(self, ip="192.168.1.200", auto_connect=False, get_version=False) -> None:
+
+        
+    
+    def __init__(self, ip: str = "192.168.1.200", auto_connect: bool=False, get_version: bool=False) -> None:
         self.ip = ip
         self.connect_state = False
-        self.__log_init()
+        self._log_init()
         
         if auto_connect:
             self.connect_ETController(self.ip)
             if get_version:
-                self.soft_version = self._robot_get_soft_version()
-                self.servo_version = self._robot_get_servo_version()
+                self.soft_version = self._soft_version
+                self.servo_version = self._servo_version
     
     
-    
+    # todo:打印出机器人的子类型
     def __repr__(self) -> str:
-        pass
+        return ""
 
         # 自定义方法实现 
     # todo:处理透传状态
-    def robot_servo_on(self) -> None:
+    def robot_servo_on(self) -> bool:
         """自动上伺服,绝大数情况都是成功的
         """
         # 对透传状态进行处理
@@ -104,9 +108,3 @@ class EC(ECServo, ECInfo, ECKinematics, ECMove, ECMoveML, ECMoveTT, ECProfinet, 
         quit()
         return False
 
-if __name__ == "__main__":
-    
-    
-    ec = EC(ip="172.16.11.251", auto_connect=True)
-    
-    ec.mod
