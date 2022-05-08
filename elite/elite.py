@@ -2,32 +2,23 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 16:32:31
+LastEditTime: 2022-05-08 23:53:48
 Description: 
 '''
 
 import copy
+from enum import Enum
 import json
 import socket
 import sys
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Union
 from loguru import logger
 
 class BaseEC():
-    # def __init__(self, ip="192.168.1.200", auto_connect=False, get_version=False) -> None:
-    #     self.ip = ip
-    #     self.connect_state = False
-    #     self.__log_init()
-        
-    #     if auto_connect:
-    #         self.connect_ETController(self.ip)
-    #         if get_version:
-    #             self.soft_version = self._robot_get_soft_version()
-    #             self.servo_version = self._robot_get_servo_version()
-
     
-    def __log_init(self):
+    
+    def _log_init(self):
         """日志格式化
         """
         logger.remove()
@@ -109,7 +100,7 @@ class BaseEC():
             self.logger.critical("socket have already closed")
 
 
-    def send_CMD(self, cmd: str, params: Dict[str,Any] = None, id: int = 1, ret_flag: int = 1):
+    def send_CMD(self, cmd: str, params: Dict[str,Any] = None, id: int = 1, ret_flag: int = 1) -> Any:
         """向8055发送指定命令
 
         Args:
@@ -146,3 +137,59 @@ class BaseEC():
             self.logger.error(f"CMD: {cmd} | {e}")
             quit()
             return (False,None,None)
+
+    class Coord(Enum):
+        JOINT_COORD = 0
+        CART_COORD = 1
+        TOOL_COORD = 2
+        USER_COORD = 3
+        CYLINDER_COORD = 4
+
+
+    class ToolCoord(Enum):
+        
+        TOOL0 = 0   # 工具0
+        TOOL1 = 1   # 工具1
+        TOOL2 = 2   # 工具2
+        TOOL3 = 3   # 工具3
+        TOOL4 = 4   # 工具4
+        TOOL5 = 5   # 工具5
+        TOOL6 = 6   # 工具6
+        TOOL7 = 7   # 工具7
+        
+        
+    class UserCoord(Enum):
+        
+        USER0 = 0   # 用户0
+        USER1 = 1   # 用户1
+        USER2 = 2   # 用户2
+        USER3 = 3   # 用户3
+        USER4 = 4   # 用户4
+        USER5 = 5   # 用户5
+        USER6 = 6   # 用户6
+        USER7 = 7   # 用户7
+        
+    class AngleType(Enum):
+        DEG = 0
+        RAD = 1
+        
+        
+    class CycleMode(Enum):
+        STEP = 0
+        CYCLE = 1
+        CONTINUOUS_CYCLE = 2
+        
+    
+    class ECSubType(Enum):
+        EC63 = 3
+        EC66 = 6
+        EC612 = 12
+        
+    class ToolBtn(Enum):
+        BLUE_BTN = 0
+        GREEN_BTN = 1
+
+    class ToolBtnFunc(Enum):
+        DISABLED = 0
+        DRAG = 1
+        RECORD_POINT = 2

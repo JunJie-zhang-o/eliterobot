@@ -2,14 +2,14 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 18:43:30
+LastEditTime: 2022-05-08 22:19:50
 Description: 伺服相关类
 '''
 
 import time
 from enum import Enum
 
-from .elite import BaseEC
+from elite.elite import BaseEC
 
 
 class ECServo(BaseEC):
