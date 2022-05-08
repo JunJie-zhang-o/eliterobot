@@ -1,2 +1,11 @@
 # eliterobot
-elite ec robot's SDK  for python version
+Elite EC robot's SDK  for python version
+
+## 功能需求
+
+- [ ] Pose提供弧度和角度的两种模式，计算统统用弧度，打印用角度，另外可以格式化小数位，一键转角度
+- [ ] Pose可以自动转四元素和其他表示方式
+- [ ] 位姿的乘和逆
+- [ ] 机器人模块的功能分类写，基类实现通讯，最后多继承实现EC类
+- [ ] 重新进行命名规范，定义命名规范
+- [ ] 需要分类接口类型，只设置只获取和获取和设置的

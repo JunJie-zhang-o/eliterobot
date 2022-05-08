@@ -1,0 +1,208 @@
+'''
+Author: Elite_zhangjunjie
+CreateDate: 
+LastEditors: Elite_zhangjunjie
+LastEditTime: 2022-05-08 18:43:30
+Description: 伺服相关类
+'''
+
+import time
+from enum import Enum
+
+from .elite import BaseEC
+
+
+class ECServo(BaseEC):
+    """伺服服务
+    """
+    
+    class RobotMode(Enum):
+        """机器人模式枚举
+        """
+        TECH = 0
+        PLAY = 1
+        REMOTE = 2
+
+
+    class RobotState(Enum):
+        STOP  = 0
+        PAUSE = 1
+        ESTOP = 2
+        PLAY = 3
+        ERROR = 4
+        COLLISION = 5
+    
+    
+#  伺服服务 
+    def robot_mode_get(self) -> RobotMode:
+        """获取机器人的模式
+
+        Returns:
+            RobotMode: 0示教,1运行,2远程
+        """
+
+        return self.RobotMode(self.send_CMD("getRobotMode"))
+      
+    
+    
+    def robot_state_get(self) -> RobotState:
+        """获取机器人运行状态
+            #!本指令获取的急停状态只会短暂存在,很快会被报警覆盖,如果需要获取急停状态,请使用robot_get_estop_status()
+            
+        Returns:
+            RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
+        """
+        return self.RobotState(self.send_CMD("getRobotState"))
+    
+    
+    def robot_get_estop_status(self) -> int:
+        """获取机器人的紧急停止状态(硬件的状态)
+
+        Returns:
+            int: 0:非急停,1: 急停
+        """
+        return self.send_CMD("get_estop_status")
+    
+    
+    def robot_servo_get(self) -> bool:
+        """获取伺服状态
+
+        Returns:
+            bool: True启用,False未启用
+        """
+        return self.send_CMD("getServoStatus")
+    
+    
+    def robot_servo_set(self, status: int = 1) -> bool:
+        """设置机器人伺服状态
+
+        Args:
+            status (int, optional): 1上伺服,0下伺服. Defaults to 1.
+
+        Returns:
+            bool: True操作成功,False操作失败
+        """
+        return self.send_CMD("set_servo_status",{"status":status})
+        
+        
+    def robot_sync_set(self) -> bool:
+        """编码器同步
+
+        Returns:
+            bool: True操作成功,False操作失败
+        """
+        return self.send_CMD("syncMotorStatus")
+    
+    
+    def robot_sync_get(self) -> bool:
+        """获取同步状态
+
+        Returns:
+            bool: True同步,False未同步
+        """
+        return self.send_CMD("getMotorStatus")
+    
+    
+    def robot_clear_alarm(self) -> bool:
+        """清除报警
+
+        Returns:
+            bool: True操作成功,False操作失败
+        """
+        return self.send_CMD("clearAlarm")
+
+
+
+    def wait_stop(self):
+        """等待机器人运动停止
+        """
+        while True:
+            time.sleep(0.005)
+            result = self.robot_state_get()
+            if result != self.RobotState.PLAY:
+                if result != self.RobotState.STOP:
+                    str_ = ["","state of robot in the pause","state of robot in the emergency stop","","state of robot in the error","state of robot in the collision"]
+                    self.logger.debug(str_[result.value])
+                    break
+                break
+        self.logger.info("The robot has stopped")
+
+
+    def robot_calibrate_encoder_zero(self):
+        """编码器零位校准,如果可以校准则返回True并不在乎校准结果,如果不可以校准,返回error,
+
+        Returns:
+            bool: 成功 True,失败 False
+        """
+        return self.send_CMD("calibrate_encoder_zero_position")
+    
+    
+
+    
+    
+    
+    
+    # 提供属性
+    @property
+    def mode(self) -> RobotMode:
+        """机器人的当前模式
+
+        Returns:
+            RobotMode: 0示教,1运行,2远程
+        """
+        return self.robot_mode_get()
+
+
+    @property
+    def state(self) -> RobotState:
+        """机器人的当前状态
+
+        Returns:
+            RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
+        """
+        return self.robot_state_get()
+    
+    
+    @property
+    def estop_status(self) -> int: 
+        """急停状态(硬件状态)
+
+        Returns:
+            int: 0:非急停,1: 急停
+        """
+        return self.robot_get_estop_status()    
+    
+    
+    @property
+    def servo_status(self) -> bool:
+        """获取伺服状态
+
+        Returns:
+            bool: True启用,False未启用
+        """
+        return self.robot_servo_get()
+    
+    
+    @servo_status.setter
+    def servo_status(self, _status:int = 1) -> bool:
+        """设置机器人伺服状态
+
+        Args:
+            status (int, optional): 1上伺服,0下伺服. Defaults to 1.
+
+        Returns:
+            bool: True操作成功,False操作失败
+        """
+        return self.robot_servo_set(_status)
+    
+    
+    @property
+    def sync_status(self) -> bool:
+        """获取同步状态
+
+        Returns:
+            bool: True同步,False未同步
+        """
+        return self.robot_sync_get()
+
+    
