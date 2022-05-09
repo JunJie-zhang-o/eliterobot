@@ -2,14 +2,14 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-05 21:53:19
+LastEditTime: 2022-05-09 21:08:35
 Description: 
 '''
 import setuptools
 
 setuptools.setup(
     # 项目名称
-    name = "",
+    name = "elibot",
     # 版本号
     version = "",
     # 作者
