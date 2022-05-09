@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 22:32:25
+LastEditTime: 2022-05-09 21:31:22
 Description: 
 '''
 
@@ -49,13 +49,17 @@ class EC(ECServo, ECInfo, ECKinematics, ECMove, ECMoveML, ECMoveTT, ECProfinet, 
     def __repr__(self) -> str:
         return ""
 
-        # 自定义方法实现 
-    # todo:处理透传状态
+
+    # 自定义方法实现 
     def robot_servo_on(self) -> bool:
         """自动上伺服,绝大数情况都是成功的
         """
         # 对透传状态进行处理
-        
+        if self.TT_state:
+            self.logger.debug("The TT state is enabled, and the TT cache is automatically cleared")
+            time.sleep(0.5)
+            if self.TT_clear_buff():
+                self.logger.debug("The TT cache has been cleared")
         
         state_str = ["please set Robot Mode to remote","Alarm clear failed","MotorStatus sync failed","servo status set failed"]
         state = 0

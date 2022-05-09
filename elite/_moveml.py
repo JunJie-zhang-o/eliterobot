@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 18:42:51
+LastEditTime: 2022-05-09 21:28:11
 Description: 
 '''
 
@@ -53,14 +53,7 @@ class ECMoveML(BaseEC):
         return self.send_CMD("stop_push_pos")
     
     
-    class MlPushResult(Enum):
-        CORRECT = 0
-        WRONG_LENGTH = -1
-        WRONG_FORMAT = -2
-        TIMESTAMP_IS_NOT_STANDARD = -3
-    
-    
-    def ml_check_push_result(self) -> MlPushResult:
+    def ml_check_push_result(self) -> BaseEC.MlPushResult:
         """检查push结果
 
         Returns:

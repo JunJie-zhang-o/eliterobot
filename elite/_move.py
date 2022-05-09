@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 18:47:10
+LastEditTime: 2022-05-09 21:26:39
 Description: 运动和执行任务相关
 '''
 
@@ -41,7 +41,7 @@ class ECMove(BaseEC):
 
 
     # jbi文件处理
-    def jbi_is_exist(self, file_name: str):
+    def jbi_is_exist(self, file_name: str) -> int:
         """检查jbi文件是否存在
 
         Args:
@@ -53,32 +53,32 @@ class ECMove(BaseEC):
         return self.send_CMD("checkJbiExist",{"filename":file_name})
 
 
-    def jbi_run(self, file_name: str):
+    def jbi_run(self, file_name: str) -> bool:
         """运行jbi文件
 
         Args:
             file_name (str): 待运行文件名
 
         Returns:
-            bool: True 成功 False 失败
+            bool: True操作成功,False操作失败
         """
         return self.send_CMD("runJbi",{"filename":file_name})
     
     
-    def jbi_run_state(self, file_name):
+    def jbi_run_state(self, file_name: str) -> BaseEC.JbiRunState:
         """获取jbi文件运行状态
 
         Args:
             file_name (str): jbi文件名
 
         Returns:
-            int: 0 停止状态,1 暂停状态,2 急停状态,3 运行状态,4 错误状态
+            JbiRunState: 0 停止状态,1 暂停状态,2 急停状态,3 运行状态,4 错误状态
         """
-        return self.send_CMD("getJbiState",{"filename":file_name})
+        return self.JbiRunState(self.send_CMD("getJbiState",{"filename":file_name}))
     
     
     # jog运动
-    def jog(self, index: int, speed: Optional[float] = None):
+    def jog(self, index: int, speed: Optional[float] = None) -> bool:
         """jog运动: 
                 停止发送jog命令后,机器人并不会立马停止运动,需要通过stop命令去停止
                 超过1s未接收到下一条jog运动,停止接收,机器人jog运动停止
@@ -87,7 +87,7 @@ class ECMove(BaseEC):
             speed (float, optional): 0.05 ~ 100. Defaults to None.
 
         Returns:
-            bool: 执行结果,True: 执行成功,False: 执行失败    
+            bool: True操作成功,False操作失败
         """
         if speed:
             return self.send_CMD("jog",{"index":index,"speed":speed})
@@ -95,7 +95,9 @@ class ECMove(BaseEC):
             return self.send_CMD("jog",{"index":index})
     
     
-    def move_joint(self, target_joint: list, speed: float, acc: int = None, dec: int = None, cond_type: int=None, cond_num: int=None,cond_value: int=None):
+    def move_joint(self, target_joint: list, speed: float, 
+                   acc: Optional[int] = None, dec: Optional[int] = None, 
+                   cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None) -> bool:
         """关节运动,运行后需要根据机器人运动状态去判断是否运动结束
 
         Args:
@@ -120,7 +122,9 @@ class ECMove(BaseEC):
         return self.send_CMD("moveByJoint",params)
     
     
-    def move_line(self, target_joint: list, speed: int, speed_type: int=None, acc: int = None, dec: int = None, cond_type: int=None, cond_num: int=None,cond_value: int=None):
+    def move_line(self, target_joint: list, speed: int, 
+                  speed_type: Optional[int]=None, acc: Optional[int] = None, dec: Optional[int] = None, 
+                  cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None) -> bool:
         """直线运动,运行后需根据机器人运动状态去判断是否运动结束
 
         Args:
@@ -146,7 +150,7 @@ class ECMove(BaseEC):
         return self.send_CMD("moveByLine", params)
     
     
-    def move_speed_j(self, vj: list, acc: float, t: float):
+    def move_speed_j(self, vj: list, acc: float, t: float) -> bool:
         """关节匀速运动
 
         Args:
@@ -160,7 +164,7 @@ class ECMove(BaseEC):
         return self.send_CMD("moveBySpeedj",{"vj":vj, "acc":acc, "t":t})
     
     
-    def move_stop_speed_j(self, stop_acc: int):
+    def move_stop_speed_j(self, stop_acc: int) -> bool:
         """停止关节匀速运动
 
         Args:
@@ -172,7 +176,7 @@ class ECMove(BaseEC):
         return self.send_CMD("stopj", {"acc":stop_acc})
 
     
-    def move_speed_l(self, v: list, acc: float, t: float, arot: float=None):
+    def move_speed_l(self, v: list, acc: float, t: float, arot: Optional[float]=None) -> bool:
         """直线匀速运动
 
         Args:
@@ -185,12 +189,11 @@ class ECMove(BaseEC):
             bool: 执行结果,True: 执行成功,False: 执行失败
         """
         params = {"v":v, "acc":acc, "t":t}
-        if arot is not None:
-            params["arot"] = arot
+        if arot is not None: params["arot"] = arot
         return self.send_CMD("moveBySpeedl", params)
     
     
-    def move_stop_speed_l(self, stop_acc:int):
+    def move_stop_speed_l(self, stop_acc:int) -> bool:
         """停止直线匀速运动
 
         Args:
@@ -202,12 +205,15 @@ class ECMove(BaseEC):
         return self.send_CMD("stopl", {"acc":stop_acc})
     
     
-    def move_line_in_coord(self, target_user_pose: list, speed: float, speed_type: int, user_coord: list, acc: int=0, dec: int=0, cond_type: int=None, cond_num: int=None, cond_value: int=None, unit_type: int=None):
+    def move_line_in_coord(self, target_user_pose: list, 
+                           speed: float, speed_type: int, user_coord: list, 
+                           acc: int=0, dec: int=0, 
+                           cond_type: Optional[int]=None, cond_num: Optional[int]=None, cond_value: Optional[int]=None, unit_type: Optional[int]=None):
         """指定坐标系下直线运动
 
         Args:
             target_user_pose (list): 指定坐标系下的位姿.
-            speed (float): 直线速度: 1-3000；旋转角速度: 1-300.
+            speed (float): 直线速度: 1-3000;旋转角速度: 1-300.
             speed_type (int): 0为V直线速度,1为VR旋转角速度,2为AV,3为AVR.
             user_coord (list): 指定坐标系的数据.
             acc (int, optional): 加速度. Defaults to 0.
@@ -215,10 +221,10 @@ class ECMove(BaseEC):
             cond_type (int, optional): IO类型,0为输入,1为输出.
             cond_num (int, optional): IO地址,0~63.
             cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令.
-            unit_type (int, optional): 用户坐标的rx、ry、rz,0:角度,1: 弧度. Defaults to 1.
+            unit_type (int, optional): 用户坐标的rx、ry、rz,0:角度,1: 弧度, 不填默认为弧度. Defaults to None.
         """
         params = {"targetUserPose":target_user_pose, "speed":speed, "speed_type":speed_type}
-        if user_coord is not None: params["user_oord"] = user_coord
+        if user_coord is not None: params["user_coord"] = user_coord
         if acc is not None: params["acc"] = acc
         if dec is not None: params["dec"] = dec
         if cond_type is not None: params["cond_type"] = cond_type
@@ -230,25 +236,26 @@ class ECMove(BaseEC):
     
     
     # 路点运行部分
-    def path_clear_joint(self):
+    def path_clear_joint(self) -> bool:
         """清除路点信息2.0
 
         Returns:
-            [bool]: True操作成功,False操作失败
+            bool: True操作成功,False操作失败
         """
         return self.send_CMD("clearPathPoint")
 
 
-    def path_move(self):
+    def path_move(self) -> int:
         """路点运动
 
         Returns:
-            [int]: 失败-1,成功: 路点总个数
+            int: 失败-1,成功: 路点总个数
         """
         return self.send_CMD("moveByPath")
         
         
-    def path_add_point(self, way_point: list, move_type: int,  speed: float,  smooth: int, speed_type: int=None, cond_type: int = None, cond_num: int = None, cond_value: int = None):
+    def path_add_point(self, way_point: list, move_type: int,  speed: float,  smooth: int, speed_type: Optional[int]=None,
+                       cond_type: Optional[int] = None, cond_num: Optional[int] = None, cond_value: Optional[int] = None) -> bool :
         """添加路点信息
            #!若运动类型为关节运动,则speed_type无效,不推荐使用
 
@@ -263,7 +270,7 @@ class ECMove(BaseEC):
             cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令.
 
         Returns:
-            [bool]: True操作成功,False操作失败
+            bool: True操作成功,False操作失败
         """
         params = {"wayPoint":way_point, "moveType":move_type, "speed":speed, "smooth":smooth}
         if speed_type is not None: params["speed_type"] = speed_type

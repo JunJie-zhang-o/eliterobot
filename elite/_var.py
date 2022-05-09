@@ -2,17 +2,19 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 18:43:33
+LastEditTime: 2022-05-09 21:55:10
 Description: 
 '''
 
+
+from typing import List, Optional, Union
 from .elite import BaseEC
 
 
 
 class ECVar(BaseEC):
     # 系统变量部分
-    def var_get(self, Type: str, addr: int, auto_print: bool=False):
+    def var_get(self, Type: str, addr: int, auto_print: bool=False) -> Optional[Union[float,int,list]]:
         """获取系统变量值
 
         Args:
@@ -21,7 +23,7 @@ class ECVar(BaseEC):
             auto_print (bool, optional): 自动打印变量值. Defaults to False.
 
         Returns:
-            [type]: 返回获取的变量值
+            Optional[Union[float,int,list]]: 返回获取的变量值
         """
         Type = Type.upper()
         if not Type in ("B","I","D","P","V"):
@@ -39,7 +41,7 @@ class ECVar(BaseEC):
             return var
         
         
-    def var_set(self, Type: str, addr: int, Value):
+    def var_set(self, Type: str, addr: int, Value) -> Optional[bool]:
         """设置系统变量值,remote模式下使用
 
         Args:
@@ -48,7 +50,7 @@ class ECVar(BaseEC):
             Value ([type]): 要设置的变量值
 
         Returns:
-            bool: True/False
+            bool: 成功 True,失败 False
         """
         Type = Type.upper()
         if not Type in ("B","I","D","P","V"):
@@ -63,14 +65,14 @@ class ECVar(BaseEC):
             return var
        
             
-    def var_P_is_used(self, addr: int):
+    def var_P_is_used(self, addr: int) -> Optional[int]:
         """查询P变量是否已经打开
 
         Args:
             addr (int): int 0~255
 
         Returns:
-            int: 0:未启用,1:已启用
+            Optional[int]: 0:未启用,1:已启用
         """
         if addr < 0 or addr > 255:
             self.logger.error("查询P变量状态的区间错误")
@@ -78,20 +80,19 @@ class ECVar(BaseEC):
             return self.send_CMD("getSysVarPState",{"addr":addr})
 
         
-    def var_save(self):
+    def var_save(self) -> bool:
         """保存系统变量数据,remote模式下使用
 
         Returns:
-            [type]: True / False
+            bool: 成功 True,失败 False
         """
         return self.send_CMD("save_var_data")
     
     
     
     
-    
 class IO(BaseEC):
-    def io_get(self, Type: str, addr: int, auto_print: bool=False):
+    def io_get(self, Type: str, addr: int, auto_print: bool=False) -> Optional[int]:
         """获取机器人的io状态
 
         Args:
@@ -100,15 +101,16 @@ class IO(BaseEC):
             auto_print (bool, optional): 是否自动打印数据信息. Defaults to False.
 
         Returns:
-            [type]: 0 / 1
+            Optional[int]: io状态,0低电平,1高电平
         """
         var_name = {"X":[0,127],"Y":[0,127],"M":[0,1535]}
         var_cmd = {"X":"getInput","Y":"getOutput","M_IN":"getVirtualInput","M_OUT":"getVirtualOutput"}
         Type = Type.upper()
         if not Type in var_name:
             self.logger.error("获取数据的变量类型错误")
+            return None
         else:
-            addr_min,addr_max = var_name[Type][0],var_name[Type][1]
+            addr_min, addr_max = var_name[Type][0], var_name[Type][1]
             
         if addr < addr_min and addr > addr_max:
             self.logger.error("获取数据的变量区间错误")
@@ -125,7 +127,7 @@ class IO(BaseEC):
             return var
         
         
-    def io_set(self, Type: str, addr, value: int):
+    def io_set(self, Type: str, addr, value: int) -> Optional[bool]:
         """设置机器人的io,remote模式下使用
 
         Args:
@@ -134,7 +136,7 @@ class IO(BaseEC):
             value (int): 0 / 1
 
         Returns:
-            [bool]: True / False
+            Optional[bool]: 成功 True,失败 False
         """
         var_name = {"Y":[0,63],"M":[528,799]}
         var_cmd = {"Y":"setOutput","M_OUT":"setVirtualOutput"}
@@ -142,6 +144,7 @@ class IO(BaseEC):
         Type = Type.upper()
         if not Type in var_name:
             self.logger.error("获取数据的变量类型错误")
+            return None
         else:
             addr_min, addr_max = var_name[Type][0],var_name[Type][1]
 
@@ -151,7 +154,7 @@ class IO(BaseEC):
             return self.send_CMD(var_cmd[Type],{"addr":addr,"status":value})
         
         
-    def io_read_more_M(self, addr: int, length: int):
+    def io_read_more_M(self, addr: int, length: int) -> List[int]:
         """读取连续多个的虚拟寄存器(M)
 
         Args:
@@ -159,12 +162,12 @@ class IO(BaseEC):
             length (int): 读取长度
 
         Returns:
-            [type]: 虚拟IO值列表(每16个虚拟io值用一个十进制整数进行表示,列表长度为len)
+            List[int]: 虚拟IO值列表(每16个虚拟io值用一个十进制整数进行表示,列表长度为len)
         """
         return self.send_CMD("getRegisters",{"addr":addr,"len":length})
         
         
-    def io_AI_get(self, addr: int):
+    def io_AI_get(self, addr: int) -> float:
         """获取模拟量输入
 
         Args:
@@ -176,7 +179,7 @@ class IO(BaseEC):
         return self.send_CMD("getAnalogInput", {"addr":addr})
 
 
-    def io_AO_get(self, addr: int):
+    def io_AO_get(self, addr: int) -> float:
         """获取模拟量输出
 
         Args:
@@ -188,7 +191,7 @@ class IO(BaseEC):
         return self.send_CMD("get_analog_output", {"addr":addr})
     
     
-    def io_AO_set(self, addr: int, value: float):
+    def io_AO_set(self, addr: int, value: float) -> bool:
         """设置模拟量输出
 
         Args:
@@ -196,6 +199,6 @@ class IO(BaseEC):
             value (float): 模拟量值 -10~10,addr=4时,value=[0,10]
 
         Returns:
-            [bool]: True / False
+            bool: 成功 True,失败 False
         """
         return self.send_CMD("setAnalogOutput", {"addr":addr, "value":value})

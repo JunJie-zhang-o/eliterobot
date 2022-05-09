@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-08 23:53:48
+LastEditTime: 2022-05-09 21:38:58
 Description: 
 '''
 
@@ -193,3 +193,33 @@ class BaseEC():
         DISABLED = 0
         DRAG = 1
         RECORD_POINT = 2
+        
+    
+    class JbiRunState(Enum):
+        JBI_IS_STOP  = 0
+        JBI_IS_PAUSE = 1
+        JBI_IS_ESTOP = 2
+        JBI_IS_RUN   = 3
+        JBI_IS_ERROR = 4
+        
+    class MlPushResult(Enum):
+        CORRECT = 0
+        WRONG_LENGTH = -1
+        WRONG_FORMAT = -2
+        TIMESTAMP_IS_NOT_STANDARD = -3
+        
+        
+    class RobotMode(Enum):
+        """机器人模式
+        """
+        TECH = 0
+        PLAY = 1
+        REMOTE = 2
+        
+    class RobotState(Enum):
+        STOP  = 0
+        PAUSE = 1
+        ESTOP = 2
+        PLAY = 3
+        ERROR = 4
+        COLLISION = 5

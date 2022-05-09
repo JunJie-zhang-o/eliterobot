@@ -251,7 +251,7 @@ class ECInfo(BaseEC):
 
         Args:
             tool_num (int): 工具号 0~7
-            unit_type (int, optional): 返回的单位类型,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional):  返回数据单位类型, 0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             List[float]: 对应工具号的数据
@@ -293,7 +293,7 @@ class ECInfo(BaseEC):
 
         Args:
             user_num (int): 用户坐标号,0~7
-            unit_type (int, optional): 返回数据的单元,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional): 返回数据单位类型, 0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             List[float]: 返回对应的用户坐标系数据
@@ -316,7 +316,7 @@ class ECInfo(BaseEC):
         Args:
             user_num (int): 用户坐标系序号0~7
             frame_value (List[float]): 坐标系的数据
-            unit_type (int, optional): 传入及返回的单位类型,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional): 传入及返回的单位类型,0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             bool: True操作成功,False操作失败
@@ -331,7 +331,7 @@ class ECInfo(BaseEC):
         """获取当前TCP在当前用户坐标系下的位姿
 
         Args:
-            unit_type (int, optional): 返回单位类型,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional): 返回单位类型,0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             List[float]: 当前TCP在当前用户坐标系下的位姿
@@ -346,7 +346,7 @@ class ECInfo(BaseEC):
         """当前的法兰盘位姿
 
         Args:
-            unit_type (int, optional): 返回数据单位,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional): 返回数据单位,0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             List[float]: 返回的法兰盘中心位姿
@@ -361,7 +361,7 @@ class ECInfo(BaseEC):
         """法兰盘在当前用户坐标系下的位姿
 
         Args:
-            unit_type (int, optional): 返回数据单位,0:角度,1:弧度. Defaults to None.
+            unit_type (int, optional): 返回数据单位,0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
         Returns:
             List[float]: 法兰盘中心在用户坐标系下的位姿
