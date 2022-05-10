@@ -2,13 +2,13 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-04-30 01:19:19
+LastEditTime: 2022-05-10 13:35:46
 Description: 基于list实现的Pose类,主要实现打印和调试中角度和弧度的显示,以及求逆和乘
 '''
 import math
 from typing import Any, SupportsIndex, overload
 
-from ElitePoseCali import pose_inv, pose_mul
+from others.ElitePoseCali import pose_inv, pose_mul
 
 
 class Pose(list):
