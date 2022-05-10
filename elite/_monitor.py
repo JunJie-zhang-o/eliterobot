@@ -1,7 +1,7 @@
 '''
 Author: ZhangJunJie
 CreateDate: 
-LastEditTime: 2022-05-08 18:44:18
+LastEditTime: 2022-05-09 22:55:25
 Description: 
 '''
 import collections
@@ -82,12 +82,12 @@ class ECMonitor():
     
     PORT = 8056
     
-    def __init__(self, robot_ip) -> None:
+    def __init__(self, ip) -> None:
         
-        self.ip = robot_ip
-        self.robot_info = ECMonitorInfo()        
-        self.recv_flag = False   # 是否已经开始接受数据
-        self.lock = threading.Lock()
+        self.ip = ip
+        self.monitor_info = ECMonitorInfo()        
+        self.monitor_recv_flag = False   # 是否已经开始接受数据
+        self.monitor_lock = threading.Lock()
 
         
     def __first_connect(self) -> None:
@@ -133,28 +133,27 @@ class ECMonitor():
     def __socket_create(self):
         """创建socket连接
         """
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((self.ip, self.PORT))
+        self.monitor_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.monitor_sock.connect((self.ip, self.PORT))
         
         
-
     def monitor_run(self):
         """监控程序运行
         """
-
+        self.monitor_run_state = True
         self.__first_connect()
         self.__socket_create()
         # ? 测试
-        self.tt = 0
-        self.br = 0
+        self.tt = 0     # 数据总接受次数
+        self.br = 0     # 重连次数
         # ? 测试
 
         while 1:
-            self.lock.acquire()
+            self.monitor_lock.acquire()
             
             buffer = None
-            buffer = self.sock.recv(self.MSG_SIZE, socket.MSG_WAITALL)
-            self.recv_flag = True
+            buffer = self.monitor_sock.recv(self.MSG_SIZE, socket.MSG_WAITALL)
+            self.monitor_recv_flag = True
             self._recv_buf_size = len(buffer)
             self.tt += 1
 
@@ -173,27 +172,31 @@ class ECMonitor():
 
                 # 包头异常时，重新建立连接
                 if k == "MessageSize" and value[0] != self.MSG_SIZE : 
-                    self.sock.close()
+                    self.monitor_sock.close()
                     self.__socket_create() 
-                    self.recv_flag = False
+                    self.monitor_recv_flag = False
                     # ? 测试
                     self.br += 1
                     # ? 测试
                     break
 
                 if len(v) > 1:
-                    setattr(self.robot_info, k, [value[i] for i in range(len(v))])
+                    setattr(self.monitor_info, k, [value[i] for i in range(len(v))])
                 else:
-                    setattr(self.robot_info, k, value[0])
+                    setattr(self.monitor_info, k, value[0])
 
-            self.lock.release()
+            self.monitor_lock.release()
             # self.robot_info_print(is_clear_screen=True)
+            if self.monitor_run_state == False: 
+                self.monitor_sock.close()
+                break
     
     
-    def robot_info_print(self, is_clear_screen: bool= False):
-        """打印机器人的当前信息
+    def monitor_info_print(self, is_clear_screen: bool= False):
+        """显示0.5机器人的当前信息
 
-        Args:
+        Args
+        ----
             is_clear_screen (bool, optional): 是否自动清屏. Defaults to False.
         """
         def spilt_line():
@@ -206,12 +209,12 @@ class ECMonitor():
             elif sys_p == "Linux":
                 os.system("clear")
         
-        if self.recv_flag:
-            print(f"Robot IP: {self.ip} | Currnet Version Bytes size: {self.unpack_size} | Current Recv Buffer Size: {self._recv_buf_size} | TT: {self.tt} | BR: {self.br}")
+        if self.monitor_recv_flag:
+            print(f"Robot IP: {self.ip} | Current Version Bytes size: {self.unpack_size} | Current Recv Buffer Size: {self._recv_buf_size} | TT: {self.tt} | BR: {self.br}")
             # print(f"Robot IP: {self.ip} ")
             spilt_line()
 
-            for k, v in (vars(self.robot_info).items()):
+            for k, v in (vars(self.monitor_info).items()):
                 # 需要再次进行处理的数据
                 if k == "TimeStamp":
                     v = time.gmtime(v // 1000)
@@ -225,7 +228,7 @@ class ECMonitor():
                 spilt_line()
             
             # 清屏
-            time.sleep(0.5)
+            # time.sleep(0.5)
             if is_clear_screen:
                 cls_screen()
         
@@ -235,13 +238,14 @@ class ECMonitor():
 if __name__ == "__main__":
 
     import threading
-    ec = ECMonitor("192.168.1.200")
-    # ec = ECMonitor("172.16.11.240")
+    # ec = ECMonitor("192.168.1.200")
+    ec = ECMonitor("172.16.11.251")
 
     thread_ec = threading.Thread(target=ec.monitor_run, args=(), daemon=True)
     thread_ec.start()
     time.sleep(1)
     print("---")
     while 1:
-        ec.robot_info_print()
+        ec.monitor_info_print()
+        
           
