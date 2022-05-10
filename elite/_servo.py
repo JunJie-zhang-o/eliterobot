@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-09 21:42:35
+LastEditTime: 2022-05-10 09:59:28
 Description: 伺服相关类
 '''
 
@@ -27,7 +27,8 @@ class ECServo(BaseEC):
     def mode(self) -> BaseEC.RobotMode:
         """获取机器人的模式
 
-        Returns:
+        Returns
+        -------
             RobotMode: 0示教,1运行,2远程
         """
         return self.RobotMode(self.send_CMD("getRobotMode"))
@@ -38,7 +39,8 @@ class ECServo(BaseEC):
         """获取机器人运行状态
             #!本指令获取的急停状态只会短暂存在,很快会被报警覆盖,如果需要获取急停状态,请使用robot_get_estop_status()
             
-        Returns:
+        Returns
+        -------
             RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
         """
         return self.RobotState(self.send_CMD("getRobotState"))
@@ -48,7 +50,8 @@ class ECServo(BaseEC):
     def estop_status(self) -> int:
         """获取机器人的紧急停止状态(硬件的状态)
 
-        Returns:
+        Returns
+        -------
             int: 0:非急停,1: 急停
         """
         return self.send_CMD("get_estop_status")
@@ -58,20 +61,22 @@ class ECServo(BaseEC):
     def servo_status(self) -> bool:
         """获取伺服状态
 
-        Returns:
+        Returns
+        -------
             bool: True启用,False未启用
         """
         return self.send_CMD("getServoStatus")
     
     
-    @servo_status.setter
-    def servo_status(self, _status:int = 1) -> bool:
+    def servo_status_set(self, _status:int = 1) -> bool:
         """设置机器人伺服状态
 
-        Args:
+        Args
+        ----
             status (int, optional): 1上伺服,0下伺服. Defaults to 1.
 
-        Returns:
+        Returns
+        -------
             bool: True操作成功,False操作失败
         """
         return self.send_CMD("set_servo_status",{"status":_status})
@@ -80,7 +85,8 @@ class ECServo(BaseEC):
     def sync(self) -> bool:
         """编码器同步
 
-        Returns:
+        Returns
+        -------
             bool: True操作成功,False操作失败
         """
         return self.send_CMD("syncMotorStatus")
@@ -90,7 +96,8 @@ class ECServo(BaseEC):
     def sync_status(self) -> bool:
         """获取同步状态
 
-        Returns:
+        Returns
+        -------
             bool: True同步,False未同步
         """
         return self.send_CMD("getMotorStatus")
@@ -99,7 +106,8 @@ class ECServo(BaseEC):
     def clear_alarm(self) -> bool:
         """清除报警
 
-        Returns:
+        Returns
+        -------
             bool: True操作成功,False操作失败
         """
         return self.send_CMD("clearAlarm")
@@ -123,7 +131,8 @@ class ECServo(BaseEC):
     def calibrate_encoder_zero(self) -> bool:
         """编码器零位校准,如果可以校准则返回True并不在乎校准结果,如果不可以校准,返回error,
 
-        Returns:
+        Returns
+        -------
             bool: 成功 True,失败 False
         """
         return self.send_CMD("calibrate_encoder_zero_position")
@@ -134,7 +143,8 @@ class ECServo(BaseEC):
     # def mode(self) -> RobotMode:
     #     """机器人的当前模式
 
-    #     Returns:
+    #     Returns
+        -------
     #         RobotMode: 0示教,1运行,2远程
     #     """
     #     return self.robot_mode_get()
@@ -144,7 +154,8 @@ class ECServo(BaseEC):
     # def state(self) -> RobotState:
     #     """机器人的当前状态
 
-    #     Returns:
+    #     Returns
+        -------
     #         RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
     #     """
     #     return self.robot_state_get()
@@ -154,7 +165,8 @@ class ECServo(BaseEC):
     # def estop_status(self) -> int: 
     #     """急停状态(硬件状态)
 
-    #     Returns:
+    #     Returns
+        -------
     #         int: 0:非急停,1: 急停
     #     """
     #     return self.robot_get_estop_status()    
@@ -164,7 +176,8 @@ class ECServo(BaseEC):
     # def servo_status(self) -> bool:
     #     """获取伺服状态
 
-    #     Returns:
+    #     Returns
+        -------
     #         bool: True启用,False未启用
     #     """
     #     return self.robot_servo_get()
@@ -175,9 +188,11 @@ class ECServo(BaseEC):
     #     """设置机器人伺服状态
 
     #     Args:
+        # -----
     #         status (int, optional): 1上伺服,0下伺服. Defaults to 1.
 
-    #     Returns:
+    #     Returns
+        -------
     #         bool: True操作成功,False操作失败
     #     """
     #     return self.robot_servo_set(_status)
@@ -187,7 +202,8 @@ class ECServo(BaseEC):
     # def sync_status(self) -> bool:
     #     """获取同步状态
 
-    #     Returns:
+    #     Returns
+        -------
     #         bool: True同步,False未同步
     #     """
     #     return self.robot_sync_get()

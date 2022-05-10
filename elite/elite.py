@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-09 21:38:58
+LastEditTime: 2022-05-10 09:59:37
 Description: 
 '''
 
@@ -12,7 +12,7 @@ import json
 import socket
 import sys
 import time
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 from loguru import logger
 
 class BaseEC():
@@ -43,7 +43,8 @@ class BaseEC():
     def _set_sock_sendBuf(self, send_buf: int, is_print: bool=False):
         """设置socket发送缓存区大小
 
-        Args:
+        Args
+        ----
             send_buf (int): 要设置的缓存区的大小
             is_print (bool, optional): 是否打印数据. Defaults to False.
         """
@@ -67,14 +68,19 @@ class BaseEC():
             port (int, optional): SDK端口号. Defaults to 8055.
             timeout (float, optional): TCP通信的超时时间. Defaults to 2.
 
-        Returns:
+        Returns
+        -------
             [tuple]: (True/False,socket/None),返回的socket套接字已在该模块定义为全局变量
         """
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
+        
+        # -------------------------------------------------------------------------------
+        # 设置nodelay
         # self.sock.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)   # 设置nodelay
         # self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
         # sock.settimeout(timeout)
+        # -------------------------------------------------------------------------------
         
         try:
             self.sock.connect((ip,port))
@@ -91,7 +97,6 @@ class BaseEC():
     def disconnect_ETController(self) -> None:
         """断开EC机器人的8055端口
         """
-        # global sock
         if(self.sock):
             self.sock.close()
             self.sock=None
@@ -100,17 +105,19 @@ class BaseEC():
             self.logger.critical("socket have already closed")
 
 
-    def send_CMD(self, cmd: str, params: Dict[str,Any] = None, id: int = 1, ret_flag: int = 1) -> Any:
+    def send_CMD(self, cmd: str, params: Optional[dict] = None, id: int = 1, ret_flag: int = 1) -> Any:
         """向8055发送指定命令
 
-        Args:
+        Args
+        ----
             cmd (str): 指令
-            params (dict, optional): 参数. Defaults to None.
+            params (Dict[str,Any], optional): 参数. Defaults to None.
             id (int, optional): id号. Defaults to 1.
             ret_flag (int, optional): 发送数据后是否接收数据,0不接收,1接收. Defaults to 1.
 
-        Returns:
-            [str]: 对应指令返回的信息或错误信息
+        Returns
+        -------
+            Any: 对应指令返回的信息或错误信息
         """
         if(not params):
             params = {}
@@ -138,11 +145,12 @@ class BaseEC():
             quit()
             return (False,None,None)
 
+
     class Coord(Enum):
-        JOINT_COORD = 0
-        CART_COORD = 1
-        TOOL_COORD = 2
-        USER_COORD = 3
+        JOINT_COORD    = 0
+        CART_COORD     = 1
+        TOOL_COORD     = 2
+        USER_COORD     = 3
         CYLINDER_COORD = 4
 
 
@@ -175,23 +183,23 @@ class BaseEC():
         
         
     class CycleMode(Enum):
-        STEP = 0
-        CYCLE = 1
+        STEP             = 0
+        CYCLE            = 1
         CONTINUOUS_CYCLE = 2
         
     
     class ECSubType(Enum):
-        EC63 = 3
-        EC66 = 6
+        EC63  = 3
+        EC66  = 6
         EC612 = 12
         
     class ToolBtn(Enum):
-        BLUE_BTN = 0
+        BLUE_BTN  = 0
         GREEN_BTN = 1
 
     class ToolBtnFunc(Enum):
-        DISABLED = 0
-        DRAG = 1
+        DISABLED     = 0
+        DRAG         = 1
         RECORD_POINT = 2
         
     
@@ -203,23 +211,23 @@ class BaseEC():
         JBI_IS_ERROR = 4
         
     class MlPushResult(Enum):
-        CORRECT = 0
-        WRONG_LENGTH = -1
-        WRONG_FORMAT = -2
+        CORRECT                   = 0
+        WRONG_LENGTH              = -1
+        WRONG_FORMAT              = -2
         TIMESTAMP_IS_NOT_STANDARD = -3
         
         
     class RobotMode(Enum):
         """机器人模式
         """
-        TECH = 0
-        PLAY = 1
+        TECH   = 0
+        PLAY   = 1
         REMOTE = 2
         
     class RobotState(Enum):
-        STOP  = 0
-        PAUSE = 1
-        ESTOP = 2
-        PLAY = 3
-        ERROR = 4
+        STOP      = 0
+        PAUSE     = 1
+        ESTOP     = 2
+        PLAY      = 3
+        ERROR     = 4
         COLLISION = 5
