@@ -1,3 +1,6 @@
 venv
 Test
 __pycache__
+build
+dist
+elirobot.egg-info
