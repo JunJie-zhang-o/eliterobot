@@ -8,7 +8,7 @@ Description:
 
 
 from typing import List, Optional, Union
-from .elite import BaseEC
+from ._baseec import BaseEC
 
 
 

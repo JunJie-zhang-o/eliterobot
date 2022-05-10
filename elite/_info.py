@@ -11,7 +11,7 @@ from enum import Enum
 import hashlib
 import time
 from typing import Optional
-from .elite import BaseEC
+from ._baseec import BaseEC
 
 
 

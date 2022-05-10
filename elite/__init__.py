@@ -2,40 +2,47 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 09:55:26
+LastEditTime: 2022-05-10 14:19:54
 Description: 
 '''
+__all__ = ["EC"]
+__version__ = "0.0.1"
 
 import threading
-from typing import Optional, overload
-from ._servo import ECServo
-from elite._info import ECInfo
-from elite._kinematics import ECKinematics
-from elite._move import ECMove
-from elite._moveml import ECMoveML
-from elite._movett import ECMoveTT
-from elite._profinet import ECProfinet
-from elite._var import ECVar
-from elite._monitor import ECMonitor
+from typing import Optional
+from ._servo import ECServo as __ECServo
+from elite._info import ECInfo as __ECInfo
+from elite._kinematics import ECKinematics as __ECKinematics
+from elite._move import ECMove as __ECMove
+from elite._moveml import ECMoveML as __ECMoveML
+from elite._movett import ECMoveTT as __ECMoveTT
+from elite._profinet import ECProfinet as __ECProfinet
+from elite._var import ECVar as __ECVar
+from elite._monitor import ECMonitor as __ECMonitor
 
-from loguru import logger
+
 import time
 
 
-
-__version__ = "0.0.1"
 
 __recommended_min_robot_version = "3.0.0"
 
 
 
 
-class EC(ECServo, ECInfo, ECKinematics, ECMove, ECMoveML, ECMoveTT, ECProfinet, ECVar, ECMonitor):
+class EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor):
     
-
-        
     
     def __init__(self, ip: str = "192.168.1.200",name: Optional[str]="None", auto_connect: bool=False, get_version: bool=False) -> None:
+        """初始化EC机器人
+
+        Args
+        ----
+            ip (str, optional): 机器人的ip. Defaults to "192.168.1.200".
+            name (Optional[str], optional): 机器人的名字,在打印实例时可以看到. Defaults to "None".
+            auto_connect (bool, optional): 是否自动连接机器人. Defaults to False.
+            get_version (bool, optional): 是否自动获取机器人的版本号. Defaults to False.
+        """
         super().__init__(self)
         self.ip = ip
         self.name = name
@@ -151,5 +158,3 @@ class EC(ECServo, ECInfo, ECKinematics, ECMove, ECMoveML, ECMoveTT, ECProfinet, 
         self.monitor_thread.join()
     
     
-
-    # def monitor_test

@@ -2,14 +2,14 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 09:59:28
+LastEditTime: 2022-05-10 10:16:52
 Description: 伺服相关类
 '''
 
 import time
 from enum import Enum
 
-from elite.elite import BaseEC
+from elite._baseec import BaseEC
 
 
 class ECServo(BaseEC):
@@ -144,7 +144,7 @@ class ECServo(BaseEC):
     #     """机器人的当前模式
 
     #     Returns
-        -------
+        # -------
     #         RobotMode: 0示教,1运行,2远程
     #     """
     #     return self.robot_mode_get()
@@ -155,7 +155,7 @@ class ECServo(BaseEC):
     #     """机器人的当前状态
 
     #     Returns
-        -------
+        # -------
     #         RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
     #     """
     #     return self.robot_state_get()
@@ -166,7 +166,7 @@ class ECServo(BaseEC):
     #     """急停状态(硬件状态)
 
     #     Returns
-        -------
+        # -------
     #         int: 0:非急停,1: 急停
     #     """
     #     return self.robot_get_estop_status()    
@@ -177,7 +177,7 @@ class ECServo(BaseEC):
     #     """获取伺服状态
 
     #     Returns
-        -------
+        # -------
     #         bool: True启用,False未启用
     #     """
     #     return self.robot_servo_get()
@@ -192,7 +192,7 @@ class ECServo(BaseEC):
     #         status (int, optional): 1上伺服,0下伺服. Defaults to 1.
 
     #     Returns
-        -------
+        # -------
     #         bool: True操作成功,False操作失败
     #     """
     #     return self.robot_servo_set(_status)
@@ -203,7 +203,7 @@ class ECServo(BaseEC):
     #     """获取同步状态
 
     #     Returns
-        -------
+        # -------
     #         bool: True同步,False未同步
     #     """
     #     return self.robot_sync_get()

@@ -7,7 +7,7 @@ Description:
 '''
 
 from typing import List,Optional
-from .elite import BaseEC
+from ._baseec import BaseEC
 
 class ECKinematics(BaseEC):
     

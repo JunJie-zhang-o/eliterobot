@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 09:59:37
+LastEditTime: 2022-05-10 13:39:52
 Description: 
 '''
 
@@ -12,7 +12,7 @@ import json
 import socket
 import sys
 import time
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional
 from loguru import logger
 
 class BaseEC():

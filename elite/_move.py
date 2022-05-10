@@ -6,7 +6,7 @@ LastEditTime: 2022-05-10 10:06:14
 Description: 运动和执行任务相关
 '''
 
-from .elite import BaseEC
+from ._baseec import BaseEC
 from typing import Optional
 
 

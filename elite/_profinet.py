@@ -7,7 +7,7 @@ Description:
 '''
 
 from typing import List
-from .elite import BaseEC
+from ._baseec import BaseEC
 
 
 class ECProfinet(BaseEC):

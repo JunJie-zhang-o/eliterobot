@@ -7,7 +7,7 @@ Description:
 '''
 import time
 
-from .elite import BaseEC
+from ._baseec import BaseEC
 from typing import List, Optional
 
 class ECMoveTT(BaseEC):

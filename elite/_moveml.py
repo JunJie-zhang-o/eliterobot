@@ -8,7 +8,7 @@ Description:
 
 
 from enum import Enum
-from .elite import BaseEC
+from ._baseec import BaseEC
 
 
 class ECMoveML(BaseEC):
