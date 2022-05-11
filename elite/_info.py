@@ -5,28 +5,45 @@ LastEditors: Elite_zhangjunjie
 LastEditTime: 2022-05-10 10:00:32
 Description: 
 '''
-import re
-from typing import List, Tuple, Union
-from enum import Enum
 import hashlib
 import time
-from typing import Optional
+from typing import List, Optional, Union
+
 from ._baseec import BaseEC
-
-
 
 
 class ECInfo(BaseEC):
 
     @property
-    def _soft_version(self) -> str:
+    def soft_version(self) -> str:
         """控制器软件版本号
+        
+        Returns
+        -------
+            str: 机器人当前的软件版本号
+        
+        Examples
+        --------
+        >>> from elite import EC
+        >>> ec = EC(ip="192.168.1.200", auto_connect=True)
+        >>> print(ec.soft_version)  # => v3.2.2
         """
         return self.send_CMD("getSoftVersion")
 
+
     @property
-    def _servo_version(self) -> str:
+    def servo_version(self) -> str:
         """伺服版本号
+        
+        Returns
+        -------
+            str: 机器人当前的伺服版本号
+        
+        Examples
+        --------
+        >>> from elite import EC
+        >>> ec = EC(ip="192.168.1.200", auto_connect=True)
+        >>> print(ec.servo_version) # => 轴1对应伺服版本为11 轴2对应伺服版本为11 轴3对应伺服版本为11 轴4对应伺服版本为11 轴5对应伺服版本为11 轴6对应伺服版本为11
         """
         servo_versions = ""
         for i in range(6):
@@ -72,6 +89,15 @@ class ECInfo(BaseEC):
     @property
     def current_pose(self) -> List[float]:
         """当前位姿数据
+
+        Returns:
+            List[float]: 当前位姿数据
+            
+        Examples
+        --------
+        >>> from elite import EC
+        >>> ec = EC(ip="192.168.1.200", auto_connect=True)
+        >>> print(ec.current_pose)  # => [-116.42876928044629, -445.8173561092616, 330.01911829033054, -2.528732975547022, -0.23334446132951653, 2.9722706513750343]
         """
         return self.get_tcp_pose()
     
@@ -692,7 +718,7 @@ class ECInfo(BaseEC):
         return self.send_CMD("getRobotTorques")
 
     @property
-    def get_Current_encode(self) -> List[float]:
+    def current_encode(self) -> List[float]:
         """获取机器人当前编码器值列表
 
         Returns
@@ -712,8 +738,8 @@ class ECInfo(BaseEC):
             ToolBtnFunc: DISABLED/DRAG/RECORD_POINT
         """
         return self.ToolBtnFunc(
-            self.send_CMD("checkFlangeButtonFlangeButton",
-                          {"button_num": self.ToolBtn.BLUE_BTN}))
+            self.send_CMD("checkFlangeButton",
+                          {"button_num": self.ToolBtn.BLUE_BTN.value}))
 
 
     @property
@@ -725,8 +751,8 @@ class ECInfo(BaseEC):
             ToolBtnFunc: DISABLED/DRAG/RECORD_POINT
         """
         return self.ToolBtnFunc(
-            self.send_CMD("checkFlangeButtonFlangeButton",
-                          {"button_num": self.ToolBtn.GREEN_BTN}))
+            self.send_CMD("checkFlangeButton",
+                          {"button_num": self.ToolBtn.GREEN_BTN.value}))
 
 
     @blue_tool_btn_func.setter

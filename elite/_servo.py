@@ -30,6 +30,12 @@ class ECServo(BaseEC):
         Returns
         -------
             RobotMode: 0示教,1运行,2远程
+        
+        Examples
+        --------
+        >>> from elite import EC
+        >>> ec = EC(ip="192.168.1.200", auto_connect=True)
+        >>> print(ec.mode)  # => RobotMode.TECH
         """
         return self.RobotMode(self.send_CMD("getRobotMode"))
       
@@ -42,6 +48,12 @@ class ECServo(BaseEC):
         Returns
         -------
             RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
+            
+        Examples
+        --------
+        >>> from elite import EC
+        >>> ec = EC(ip="192.168.1.200", auto_connect=True)
+        >>> print(ec.state)  # => RobotState.STOP
         """
         return self.RobotState(self.send_CMD("getRobotState"))
     
@@ -137,75 +149,4 @@ class ECServo(BaseEC):
         """
         return self.send_CMD("calibrate_encoder_zero_position")
        
-    
-    # 提供属性
-    # @property
-    # def mode(self) -> RobotMode:
-    #     """机器人的当前模式
-
-    #     Returns
-        # -------
-    #         RobotMode: 0示教,1运行,2远程
-    #     """
-    #     return self.robot_mode_get()
-
-
-    # @property
-    # def state(self) -> RobotState:
-    #     """机器人的当前状态
-
-    #     Returns
-        # -------
-    #         RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
-    #     """
-    #     return self.robot_state_get()
-    
-    
-    # @property
-    # def estop_status(self) -> int: 
-    #     """急停状态(硬件状态)
-
-    #     Returns
-        # -------
-    #         int: 0:非急停,1: 急停
-    #     """
-    #     return self.robot_get_estop_status()    
-    
-    
-    # @property
-    # def servo_status(self) -> bool:
-    #     """获取伺服状态
-
-    #     Returns
-        # -------
-    #         bool: True启用,False未启用
-    #     """
-    #     return self.robot_servo_get()
-    
-    
-    # @servo_status.setter
-    # def servo_status(self, _status:int = 1) -> bool:
-    #     """设置机器人伺服状态
-
-    #     Args:
-        # -----
-    #         status (int, optional): 1上伺服,0下伺服. Defaults to 1.
-
-    #     Returns
-        # -------
-    #         bool: True操作成功,False操作失败
-    #     """
-    #     return self.robot_servo_set(_status)
-    
-    
-    # @property
-    # def sync_status(self) -> bool:
-    #     """获取同步状态
-
-    #     Returns
-        # -------
-    #         bool: True同步,False未同步
-    #     """
-    #     return self.robot_sync_get()
-
     

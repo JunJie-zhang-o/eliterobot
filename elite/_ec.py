@@ -19,7 +19,7 @@ __recommended_min_robot_version = "3.0.0"
 class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor):
     
     
-    def __init__(self, ip: str = "192.168.1.200",name: Optional[str]="None", auto_connect: bool=False, get_version: bool=False) -> None:
+    def __init__(self, ip: str = "192.168.1.200",name: Optional[str]="None", auto_connect: bool=False) -> None:
         """初始化EC机器人
 
         Args
@@ -27,7 +27,6 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
             ip (str, optional): 机器人的ip. Defaults to "192.168.1.200".
             name (Optional[str], optional): 机器人的名字,在打印实例时可以看到. Defaults to "None".
             auto_connect (bool, optional): 是否自动连接机器人. Defaults to False.
-            get_version (bool, optional): 是否自动获取机器人的版本号. Defaults to False.
         """
         super().__init__(self)
         self.ip = ip
@@ -37,9 +36,6 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
         
         if auto_connect:
             self.connect_ETController(self.ip)
-            if get_version:
-                self.soft_version = self._soft_version
-                self.servo_version = self._servo_version
     
     
 
