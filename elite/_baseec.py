@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 13:39:52
+LastEditTime: 2022-05-10 23:05:47
 Description: 
 '''
 
@@ -147,15 +147,18 @@ class BaseEC():
 
 
     class Coord(Enum):
-        JOINT_COORD    = 0
-        CART_COORD     = 1
-        TOOL_COORD     = 2
-        USER_COORD     = 3
-        CYLINDER_COORD = 4
+        """坐标系(该值用于jog时指定坐标系等)
+        """
+        JOINT_COORD    = 0  # 关节坐标系
+        CART_COORD     = 1  # 笛卡尔坐标系/世界坐标系
+        TOOL_COORD     = 2  # 工具坐标系
+        USER_COORD     = 3  # 用户坐标系
+        CYLINDER_COORD = 4  # 圆柱坐标系
 
 
     class ToolCoord(Enum):
-        
+        """工具坐标系(该值用于设置查看工具坐标系数据时设定坐标系等)
+        """
         TOOL0 = 0   # 工具0
         TOOL1 = 1   # 工具1
         TOOL2 = 2   # 工具2
@@ -167,7 +170,8 @@ class BaseEC():
         
         
     class UserCoord(Enum):
-        
+        """工具坐标系(该值用于设置查看用户坐标系数据时设定坐标系等)
+        """
         USER0 = 0   # 用户0
         USER1 = 1   # 用户1
         USER2 = 2   # 用户2
@@ -177,57 +181,77 @@ class BaseEC():
         USER6 = 6   # 用户6
         USER7 = 7   # 用户7
         
+        
     class AngleType(Enum):
-        DEG = 0
-        RAD = 1
+        """位姿单位(该值用于设定传入和返回位姿数据时的单位)
+        """
+        DEG = 0     # 角度
+        RAD = 1     # 弧度
         
         
     class CycleMode(Enum):
-        STEP             = 0
-        CYCLE            = 1
-        CONTINUOUS_CYCLE = 2
+        """循环模式(该值用于查询设置当前的循环模式)
+        """
+        STEP             = 0    # 单步
+        CYCLE            = 1    # 单循环
+        CONTINUOUS_CYCLE = 2    # 连续循环
         
     
     class ECSubType(Enum):
-        EC63  = 3
-        EC66  = 6
-        EC612 = 12
+        """机器人子类型
+        """
+        EC63  = 3   # EC63
+        EC66  = 6   # EC66
+        EC612 = 12  # EC612
+        
         
     class ToolBtn(Enum):
-        BLUE_BTN  = 0
-        GREEN_BTN = 1
+        """末端按钮
+        """
+        BLUE_BTN  = 0   # 末端蓝色按钮
+        GREEN_BTN = 1   # 末端绿色按钮
 
     class ToolBtnFunc(Enum):
-        DISABLED     = 0
-        DRAG         = 1
-        RECORD_POINT = 2
+        """末端按钮功能
+        """
+        DISABLED     = 0    # 未启用
+        DRAG         = 1    # 拖动
+        RECORD_POINT = 2    # 拖动记点
         
     
     class JbiRunState(Enum):
-        JBI_IS_STOP  = 0
-        JBI_IS_PAUSE = 1
-        JBI_IS_ESTOP = 2
-        JBI_IS_RUN   = 3
-        JBI_IS_ERROR = 4
+        """jbi运行状态
+        """
+        JBI_IS_STOP  = 0    # jbi运行停止    
+        JBI_IS_PAUSE = 1    # jbi运行暂停
+        JBI_IS_ESTOP = 2    # jbi运行急停
+        JBI_IS_RUN   = 3    # jbi运行中
+        JBI_IS_ERROR = 4    # jbi运行错误
+        
         
     class MlPushResult(Enum):
-        CORRECT                   = 0
-        WRONG_LENGTH              = -1
-        WRONG_FORMAT              = -2
-        TIMESTAMP_IS_NOT_STANDARD = -3
+        """ml点位push结果
+        """
+        CORRECT                   = 0       # 正确
+        WRONG_LENGTH              = -1      # 长度错误
+        WRONG_FORMAT              = -2      # 格式错误
+        TIMESTAMP_IS_NOT_STANDARD = -3      # 时间戳不标准
         
         
     class RobotMode(Enum):
         """机器人模式
         """
-        TECH   = 0
-        PLAY   = 1
-        REMOTE = 2
+        TECH   = 0  # 示教模式
+        PLAY   = 1  # 运行模式
+        REMOTE = 2  # 远程模式
+        
         
     class RobotState(Enum):
-        STOP      = 0
-        PAUSE     = 1
-        ESTOP     = 2
-        PLAY      = 3
-        ERROR     = 4
-        COLLISION = 5
+        """机器人状态
+        """
+        STOP      = 0   # 停止状态   
+        PAUSE     = 1   # 暂停状态
+        ESTOP     = 2   # 急停状态
+        PLAY      = 3   # 运行状态
+        ERROR     = 4   # 错误状态
+        COLLISION = 5   # 碰撞状态
