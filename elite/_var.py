@@ -69,7 +69,7 @@ class ECVar(BaseEC):
             return var
        
             
-    def var_P_is_used(self, addr: int) -> Optional[int]:
+    def var_p_is_used(self, addr: int) -> Optional[int]:
         """查询P变量是否已经打开
 
         Args
