@@ -23,7 +23,8 @@ class BaseEC():
         """
         logger.remove()
         self.logger = copy.deepcopy(logger)
-        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>|line:{line}| <level>{level} | {message}</level>"
+        # format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>|line:{line}| <level>{level} | {message}</level>"
+        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>| <level>{level} | {message}</level>"
         self.logger.add(sys.stderr, format = format_str)
         logger.add(sys.stdout)
         pass    

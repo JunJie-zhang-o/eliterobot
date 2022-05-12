@@ -77,10 +77,10 @@ class ECMonitor():
     """EC系列机器人8056监控类实现
     """
     
-    SEND_FREQ = 8       # 8ms
-    FMT_MSG_SIZE = "I"  # 数据长度信息的默认字节
+    __SEND_FREQ = 8       # 8ms
+    __FMT_MSG_SIZE = "I"  # 数据长度信息的默认字节
     
-    PORT = 8056
+    __PORT = 8056
     
     def __init__(self, ip) -> None:
         
@@ -98,15 +98,15 @@ class ECMonitor():
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(5)
-            sock.connect((self.ip, self.PORT))
-            byte_msg_size = sock.recv(struct.calcsize(self.FMT_MSG_SIZE))
+            sock.connect((self.ip, self.__PORT))
+            byte_msg_size = sock.recv(struct.calcsize(self.__FMT_MSG_SIZE))
             sock.shutdown(2)
             sock.close()
-            self.MSG_SIZE = struct.unpack("!" + self.FMT_MSG_SIZE, byte_msg_size)[0]   # 实际机器人的字节长度
+            self.MSG_SIZE = struct.unpack("!" + self.__FMT_MSG_SIZE, byte_msg_size)[0]   # 实际机器人的字节长度
             # 解析出可以使用的字节长度
             self.__msg_size_judgment()
         except socket.timeout as e:
-            print(f"Connect IP : {self.ip} Port : {self.PORT} timeout")
+            print(f"Connect IP : {self.ip} Port : {self.__PORT} timeout")
             sock.shutdown(2)
             sock.close()
     
@@ -134,7 +134,7 @@ class ECMonitor():
         """创建socket连接
         """
         self.monitor_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.monitor_sock.connect((self.ip, self.PORT))
+        self.monitor_sock.connect((self.ip, self.__PORT))
         
         
     def monitor_run(self):
@@ -192,11 +192,12 @@ class ECMonitor():
                 break
     
     
-    def monitor_info_print(self, is_clear_screen: bool= False):
-        """显示0.5机器人的当前信息
+    def monitor_info_print(self,t: float=0.5, is_clear_screen: bool= False):
+        """持续显示机器人的当前信息
 
         Args
         ----
+            t (float,optional): 两次数据刷新的时间间隔(即一次数据展示的时间)
             is_clear_screen (bool, optional): 是否自动清屏. Defaults to False.
         """
         def spilt_line():
@@ -211,7 +212,6 @@ class ECMonitor():
         
         if self.monitor_recv_flag:
             print(f"Robot IP: {self.ip} | Current Version Bytes size: {self.unpack_size} | Current Recv Buffer Size: {self._recv_buf_size} | TT: {self.tt} | BR: {self.br}")
-            # print(f"Robot IP: {self.ip} ")
             spilt_line()
 
             for k, v in (vars(self.monitor_info).items()):
@@ -228,7 +228,7 @@ class ECMonitor():
                 spilt_line()
             
             # 清屏
-            # time.sleep(0.5)
+            time.sleep(t)
             if is_clear_screen:
                 cls_screen()
         

@@ -19,6 +19,7 @@ if __name__ == "__main__":
     pprint(dir(EC))
     # print(EC.__class__)
     ec = EC(ip="172.16.11.251", name="" ,auto_connect=True)
+
     # print(ec.run_speed())
     # ec.run_speed = 10
     # print(ec.run_speed)

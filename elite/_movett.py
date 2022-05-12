@@ -13,7 +13,7 @@ from typing import List, Optional
 class ECMoveTT(BaseEC):
     # 透传运动部分
     def TT_init(self, t: int = 10, lookahead: int = 400, smoothness: float = 0.1, response_enable: Optional[int] = None) -> bool:
-        """机器人透传初始化
+        """透传模式初始化
 
         Args
         ----
@@ -57,7 +57,7 @@ class ECMoveTT(BaseEC):
 
 
     def TT_add_joint(self, joint: List[float]) -> bool:
-        """透传目标关节点到缓存
+        """透传添加目标关节点到缓存
 
         Args
         ----
@@ -71,7 +71,7 @@ class ECMoveTT(BaseEC):
 
 
     def TT_add_pose(self, pose: List[float]) -> bool:
-        """添加透传目标位姿点到缓存
+        """透传添加目标位姿点到缓存
 
         Args
         ----
