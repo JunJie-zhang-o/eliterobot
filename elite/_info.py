@@ -192,14 +192,14 @@ class ECInfo(BaseEC):
 
 
     @property
-    def current_coord(self) -> BaseEC.Coord:
+    def current_coord(self) -> BaseEC.Frame:
         """获取机器人当前坐标系
 
         Returns
         -------
             BaseEC.Coord: 关节0,直角1,工具2,用户3,圆柱4
         """
-        return self.Coord(self.send_CMD("getCurrentCoord"))
+        return self.Frame(self.send_CMD("getCurrentCoord"))
 
 
     @current_coord.setter
@@ -214,7 +214,7 @@ class ECInfo(BaseEC):
         -------
             bool: True操作成功,False操作失败
         """
-        self.Coord.CART_COORD
+        self.Frame.CART_COORD
         return self.send_CMD("setCurrentCoord", {"coord_mode": coord})
 
 

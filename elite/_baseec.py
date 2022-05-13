@@ -147,14 +147,14 @@ class BaseEC():
             return (False,None,None)
 
 
-    class Coord(Enum):
+    class Frame(Enum):
         """坐标系(该值用于jog时指定坐标系等)
         """
-        JOINT_COORD    = 0  # 关节坐标系
-        CART_COORD     = 1  # 笛卡尔坐标系/世界坐标系
-        TOOL_COORD     = 2  # 工具坐标系
-        USER_COORD     = 3  # 用户坐标系
-        CYLINDER_COORD = 4  # 圆柱坐标系
+        JOINT_FRAME    = 0  # 关节坐标系
+        CART_FRAME     = 1  # 笛卡尔坐标系/世界坐标系
+        TOOL_FRAME     = 2  # 工具坐标系
+        USER_FRAME     = 3  # 用户坐标系
+        CYLINDER_FRAME = 4  # 圆柱坐标系
 
 
     class ToolCoord(Enum):
