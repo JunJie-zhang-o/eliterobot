@@ -1,7 +1,7 @@
 '''
 Author: ZhangJunJie
 CreateDate: 
-LastEditTime: 2022-05-09 22:55:25
+LastEditTime: 2022-05-13 17:27:05
 Description: 
 '''
 import collections
@@ -19,31 +19,31 @@ class ECMonitorInfo():
     """
 
     # 带顺序的字典结构,python3中的字典已经默认有顺序
-    ec_struct = collections.OrderedDict()
-    ec_struct['MessageSize'] = 'I'
-    ec_struct['TimeStamp'] = 'Q'
-    ec_struct['autorun_cycleMode'] = 'B'
-    ec_struct['machinePos']= 'd' * 8
-    ec_struct['machinePose']= 'd' * 6
-    ec_struct['machineUserPose'] = 'd' * 6
-    ec_struct['torque'] = 'd' * 8
-    ec_struct['robotState'] = 'i'
-    ec_struct['servoReady'] = 'i'
-    ec_struct['can_motor_run'] = 'i'
-    ec_struct['motor_speed'] = 'i' * 8
-    ec_struct['robotMode'] = 'i'
-    ec_struct['analog_ioInput'] = 'd' * 3
-    ec_struct['analog_ioOutput'] = 'd' * 5
-    ec_struct['digital_ioInput'] = 'Q'
-    ec_struct['digital_ioOutput'] = 'Q'
-    ec_struct['collision'] = 'B'
-    ec_struct['machineFlangePose'] = 'd' * 6
-    ec_struct['machineUserFlangePose'] = 'd' * 6
-    ec_struct["emergencyStopState"] = "B"
-    ec_struct["tcp_speed"] = "d"
-    ec_struct["joint_speed"] = "d" * 8
-    ec_struct["tcpacc"] = "d"
-    ec_struct["jointacc"] = "d" * 8
+    _ec_struct = collections.OrderedDict()
+    _ec_struct['MessageSize'] = 'I'
+    _ec_struct['TimeStamp'] = 'Q'
+    _ec_struct['autorun_cycleMode'] = 'B'
+    _ec_struct['machinePos']= 'd' * 8
+    _ec_struct['machinePose']= 'd' * 6
+    _ec_struct['machineUserPose'] = 'd' * 6
+    _ec_struct['torque'] = 'd' * 8
+    _ec_struct['robotState'] = 'i'
+    _ec_struct['servoReady'] = 'i'
+    _ec_struct['can_motor_run'] = 'i'
+    _ec_struct['motor_speed'] = 'i' * 8
+    _ec_struct['robotMode'] = 'i'
+    _ec_struct['analog_ioInput'] = 'd' * 3
+    _ec_struct['analog_ioOutput'] = 'd' * 5
+    _ec_struct['digital_ioInput'] = 'Q'
+    _ec_struct['digital_ioOutput'] = 'Q'
+    _ec_struct['collision'] = 'B'
+    _ec_struct['machineFlangePose'] = 'd' * 6
+    _ec_struct['machineUserFlangePose'] = 'd' * 6
+    _ec_struct["emergencyStopState"] = "B"
+    _ec_struct["tcp_speed"] = "d"
+    _ec_struct["joint_speed"] = "d" * 8
+    _ec_struct["tcpacc"] = "d"
+    _ec_struct["jointacc"] = "d" * 8
     
     
     def __init__(self) -> None:
@@ -78,16 +78,16 @@ class ECMonitor():
     """
     
     __SEND_FREQ = 8       # 8ms
-    __FMT_MSG_SIZE = "I"  # 数据长度信息的默认字节
+    _FMT_MSG_SIZE = "I"  # 数据长度信息的默认字节
     
-    __PORT = 8056
+    _PORT = 8056
     
-    def __init__(self, ip) -> None:
+    def __init__(self) -> None:
         
-        self.ip = ip
+        # self.robot_ip = ip
         self.monitor_info = ECMonitorInfo()        
-        self.monitor_recv_flag = False   # 是否已经开始接受数据
-        self.monitor_lock = threading.Lock()
+        self._monitor_recv_flag = False   # 是否已经开始接受数据
+        self._monitor_lock = threading.Lock()
 
         
     def __first_connect(self) -> None:
@@ -98,15 +98,16 @@ class ECMonitor():
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(5)
-            sock.connect((self.ip, self.__PORT))
-            byte_msg_size = sock.recv(struct.calcsize(self.__FMT_MSG_SIZE))
+            print(self.robot_ip, self._PORT)
+            sock.connect((self.robot_ip, self._PORT))
+            byte_msg_size = sock.recv(struct.calcsize(self._FMT_MSG_SIZE))
             sock.shutdown(2)
             sock.close()
-            self.MSG_SIZE = struct.unpack("!" + self.__FMT_MSG_SIZE, byte_msg_size)[0]   # 实际机器人的字节长度
+            self.MSG_SIZE = struct.unpack("!" + self._FMT_MSG_SIZE, byte_msg_size)[0]   # 实际机器人的字节长度
             # 解析出可以使用的字节长度
             self.__msg_size_judgment()
         except socket.timeout as e:
-            print(f"Connect IP : {self.ip} Port : {self.__PORT} timeout")
+            print(f"Connect IP : {self.robot_ip} Port : {self._PORT} timeout")
             sock.shutdown(2)
             sock.close()
     
@@ -115,7 +116,7 @@ class ECMonitor():
         """获取当前版本信息的所有数据长度信息
         """
         temp = 0
-        for i in ECMonitorInfo.ec_struct.values():
+        for i in ECMonitorInfo._ec_struct.values():
             temp += struct.calcsize(i)
 
         self.version_msg_size = int(temp)    # ECMonitorInfo对应版本的总长度
@@ -133,8 +134,8 @@ class ECMonitor():
     def __socket_create(self):
         """创建socket连接
         """
-        self.monitor_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.monitor_sock.connect((self.ip, self.__PORT))
+        self.sock_monitor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock_monitor.connect((self.robot_ip, self._PORT))
         
         
     def monitor_run(self):
@@ -144,21 +145,21 @@ class ECMonitor():
         self.__first_connect()
         self.__socket_create()
         # ? 测试
-        self.tt = 0     # 数据总接受次数
-        self.br = 0     # 重连次数
+        self._tt = 0     # 数据总接受次数
+        self.__br = 0     # 重连次数
         # ? 测试
 
         while 1:
-            self.monitor_lock.acquire()
+            self._monitor_lock.acquire()
             
             buffer = None
-            buffer = self.monitor_sock.recv(self.MSG_SIZE, socket.MSG_WAITALL)
-            self.monitor_recv_flag = True
+            buffer = self.sock_monitor.recv(self.MSG_SIZE, socket.MSG_WAITALL)
+            self._monitor_recv_flag = True
             self._recv_buf_size = len(buffer)
-            self.tt += 1
+            self._tt += 1
 
             current_unpack_size = 0
-            for k, v in (ECMonitorInfo.ec_struct.items()):
+            for k, v in (ECMonitorInfo._ec_struct.items()):
 
                 if current_unpack_size >= self.unpack_size:
                     break
@@ -172,11 +173,11 @@ class ECMonitor():
 
                 # 包头异常时，重新建立连接
                 if k == "MessageSize" and value[0] != self.MSG_SIZE : 
-                    self.monitor_sock.close()
+                    self.sock_monitor.close()
                     self.__socket_create() 
-                    self.monitor_recv_flag = False
+                    self._monitor_recv_flag = False
                     # ? 测试
-                    self.br += 1
+                    self.__br += 1
                     # ? 测试
                     break
 
@@ -185,10 +186,10 @@ class ECMonitor():
                 else:
                     setattr(self.monitor_info, k, value[0])
 
-            self.monitor_lock.release()
+            self._monitor_lock.release()
             # self.robot_info_print(is_clear_screen=True)
             if self.monitor_run_state == False: 
-                self.monitor_sock.close()
+                self.sock_monitor.close()
                 break
     
     
@@ -210,8 +211,8 @@ class ECMonitor():
             elif sys_p == "Linux":
                 os.system("clear")
         
-        if self.monitor_recv_flag:
-            print(f"Robot IP: {self.ip} | Current Version Bytes size: {self.unpack_size} | Current Recv Buffer Size: {self._recv_buf_size} | TT: {self.tt} | BR: {self.br}")
+        if self._monitor_recv_flag:
+            print(f"Robot IP: {self.robot_ip} | Current Version Bytes size: {self.unpack_size} | Current Recv Buffer Size: {self._recv_buf_size} | TT: {self._tt} | BR: {self.__br}")
             spilt_line()
 
             for k, v in (vars(self.monitor_info).items()):

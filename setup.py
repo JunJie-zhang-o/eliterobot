@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 14:17:21
+LastEditTime: 2022-05-13 16:22:15
 Description: 
 '''
 import setuptools
@@ -13,7 +13,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     # 项目名称
-    name = "elirobot",
+    name = "elirobots",
     # 版本号
     version = "0.0.1",
     # 作者

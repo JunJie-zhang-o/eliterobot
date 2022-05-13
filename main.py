@@ -2,57 +2,47 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 09:54:04
+LastEditTime: 2022-05-13 17:32:33
 Description: 
 '''
 
 
 import time
 from elite import EC
-
 from loguru import logger
 
-if __name__ == "__main__":
-    from pprint import pprint
-    import inspect
-    
-    pprint(dir(EC))
-    # print(EC.__class__)
-    ec = EC(ip="172.16.11.251", name="" ,auto_connect=True)
+import matplotlib.pyplot as plt
 
-    # print(ec.run_speed())
-    # ec.run_speed = 10
-    # print(ec.run_speed)
-    
-    # print(ec.mode)
-    # print(ec.state)
-    # print(ec.estop_status)
-    # print(ec.servo_status)
-    # print(ec.sync_status)
-    # help(ec.state.__doc__)
-    
-    a = [
-        "_ECMonitor__current_msg_size_get",
-"_ECMonitor__first_connect",
-"_ECMonitor__msg_size_judgment",
-"_ECMonitor__socket_create",
-"_get_now_joint",
-"_get_now_pose",
-"_log_init",
-"_set_sock_sendBuf",
-]
-    b = 0
-    c = 0
-    for i in dir(EC):
-        # if(hasattr(EC,i)):
-        #     print(i)
-        if i in a: continue
-        if i[1] == "_":
-            continue
-        if (inspect.ismethod(eval(f"ec.{i}"))):
-            print(i)
-            b += 1
-        c+=1
-    print(b,c)
-    print(len(dir(EC)))
-    # 80+34
+if __name__ == "__main__":
+
+    logger.add("log.log")
+
+    ec = EC(ip="172.16.11.251", auto_connect=True)
+
+    ec.monitor_thread_run()
+    ec.robot_servo_on()
+    j1 = [-166.00185643564356, -73.90748762376238, 89.49133663366337, -106.92824074074073, 89.73109567901234,
+          0.00038580246913580245]
+    ec.move_joint(j1, 30)
+    ec.wait_stop()
+    time.sleep(2)
+
+    ec.jbi_run("main")
+    all_torque = [[], [], [], [], [], [], [], []]
+    while 1:
+        time.sleep(0.1)
+        torque = [int(i) for i in ec.monitor_info.torque]
+        for k, v in enumerate(torque):
+            all_torque[k].append(v)
+
+        if ec.jbi_run_state("main").value == 0:
+            break
+        if torque[1] < -50:
+            ec.var_set("B", 0, 2)
+            # ec.
+
+
+    print(all_torque)
+    plt.plot([i for i in range(len(all_torque[0]))], all_torque[1])
+    plt.plot([i for i in range(len(all_torque[0]))], all_torque[2])
+    plt.show()

@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:06:14
+LastEditTime: 2022-05-13 13:51:24
 Description: 运动和执行任务相关
 '''
 
@@ -83,7 +83,7 @@ class ECMove(BaseEC):
         -------
             JbiRunState: 0 停止状态,1 暂停状态,2 急停状态,3 运行状态,4 错误状态
         """
-        return self.JbiRunState(self.send_CMD("getJbiState",{"filename":file_name}))
+        return self.JbiRunState(self.send_CMD("getJbiState",{"filename":file_name})['runState'])
     
     
     # jog运动

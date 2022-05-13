@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:16:52
+LastEditTime: 2022-05-13 17:11:57
 Description: 伺服相关类
 '''
 
@@ -123,21 +123,6 @@ class ECServo(BaseEC):
             bool: True操作成功,False操作失败
         """
         return self.send_CMD("clearAlarm")
-
-
-    def wait_stop(self) -> None:
-        """等待机器人运动停止
-        """
-        while True:
-            time.sleep(0.005)
-            result = self.state
-            if result != self.RobotState.PLAY:
-                if result != self.RobotState.STOP:
-                    str_ = ["","state of robot in the pause","state of robot in the emergency stop","","state of robot in the error","state of robot in the collision"]
-                    self.logger.debug(str_[result.value])
-                    break
-                break
-        self.logger.info("The robot has stopped")
 
 
     def calibrate_encoder_zero(self) -> bool:

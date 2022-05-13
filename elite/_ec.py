@@ -13,7 +13,9 @@ from elite._profinet import ECProfinet as __ECProfinet
 from elite._servo import ECServo as __ECServo
 from elite._var import ECVar as __ECVar
 
+
 __recommended_min_robot_version = "3.0.0"
+# 所有的接口在v3.0.0进行测试，多数接口在低于该版本时也可以运行，但是并未进行测试
 
 
 class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor):
@@ -28,24 +30,39 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
             name (Optional[str], optional): 机器人的名字,在打印实例时可以看到. Defaults to "None".
             auto_connect (bool, optional): 是否自动连接机器人. Defaults to False.
         """
-        super().__init__(self)
-        self.ip = ip
-        self.name = name
+        super().__init__()
+        self.robot_ip = ip
+        self.robot_name = name
         self.connect_state = False
-        self._log_init()
+        self._log_init(self.robot_ip)
         
         if auto_connect:
-            self.connect_ETController(self.ip)
+            self.connect_ETController(self.robot_ip)
     
     
 
     def __repr__(self) -> str:
         if self.connect_state:
-            return "Elite EC6%s, IP:%s, Name:%s"%(self.robot_subType.value, self.ip, self.name)
+            return "Elite EC6%s, IP:%s, Name:%s"%(self.robot_subType.value, self.robot_ip, self.robot_name)
         else:
-            return "Elite EC__, IP:%s, Name:%s"%(self.ip, self.name)
+            return "Elite EC__, IP:%s, Name:%s"%(self.robot_ip, self.robot_name)
 
-            
+
+          
+    def wait_stop(self) -> None:
+        """等待机器人运动停止
+        """
+        while True:
+            time.sleep(0.005)
+            result = self.state
+            if result != self.RobotState.PLAY:
+                if result != self.RobotState.STOP:
+                    str_ = ["","state of robot in the pause","state of robot in the emergency stop","","state of robot in the error","state of robot in the collision"]
+                    self.logger.debug(str_[result.value])
+                    break
+                break
+        self.logger.info("The robot has stopped")
+  
 
 
     # 自定义方法实现 
@@ -61,7 +78,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
         
         state_str = ["please set Robot Mode to remote","Alarm clear failed","MotorStatus sync failed","servo status set failed"]
         state = 0
-        robot_mode = self.mode
+        robot_mode = self.mode.value
         if str(robot_mode) == "2":
             state = 1
             # 清除报警
@@ -71,7 +88,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
                 while 1:
                     self.clear_alarm()
                     time.sleep(0.2)
-                    if self.state == 0:
+                    if self.state.value == 0:
                         state = 2
                         break
                     clear_num += 1
@@ -129,7 +146,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
         
         以上方法即会在控制台打印数据
         """
-        self.monitor_thread = threading.Thread(target=self.monitor_run, args=(), daemon=True, name="Elibot monitor thread,IP:%s"%(self.ip))
+        self.monitor_thread = threading.Thread(target=self.monitor_run, args=(), daemon=True, name="Elibot monitor thread,IP:%s"%(self.robot_ip))
         self.monitor_thread.start()
     
     

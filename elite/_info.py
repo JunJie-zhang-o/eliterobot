@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:00:32
+LastEditTime: 2022-05-13 16:26:20
 Description: 
 '''
 import hashlib
@@ -707,6 +707,7 @@ class ECInfo(BaseEC):
         # return self.send_CMD("getMotorSpeed")        # 2.19.2 不推荐使用
         return self.send_CMD("get_motor_speed")
 
+
     @property
     def joint_torques(self) -> List[float]:
         """获取机器人当前力矩信息
@@ -717,6 +718,7 @@ class ECInfo(BaseEC):
         """
         return self.send_CMD("getRobotTorques")
 
+
     @property
     def current_encode(self) -> List[float]:
         """获取机器人当前编码器值列表
@@ -726,7 +728,6 @@ class ECInfo(BaseEC):
             List[float]: [encode_1,encode_2,encode_3,encode_4,encode_5,encode_6,encode_7,encode_8]
         """
         return self.send_CMD("getCurrentEncode")
-
 
 
     @property

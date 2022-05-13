@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 23:05:47
+LastEditTime: 2022-05-13 17:17:00
 Description: 
 '''
 
@@ -18,13 +18,13 @@ from loguru import logger
 class BaseEC():
     
     
-    def _log_init(self):
+    def _log_init(self, ip):
         """日志格式化
         """
         logger.remove()
         self.logger = copy.deepcopy(logger)
         # format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>|line:{line}| <level>{level} | {message}</level>"
-        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>| <level>{level} | {message}</level>"
+        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) +" | {message}</level>"
         self.logger.add(sys.stderr, format = format_str)
         logger.add(sys.stdout)
         pass    
@@ -50,15 +50,15 @@ class BaseEC():
             is_print (bool, optional): 是否打印数据. Defaults to False.
         """
         if is_print:
-            before_send_buff = self.sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-            self.logger.info(f"befor_send_buff: {before_send_buff}")
-            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, send_buf)
+            before_send_buff = self.sock_cmd.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
+            self.logger.info(f"before_send_buff: {before_send_buff}")
+            self.sock_cmd.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, send_buf)
             time.sleep(1)
-            after_send_buff = self.sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
+            after_send_buff = self.sock_cmd.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
             self.logger.info(f"after_send_buff: {after_send_buff}")
             time.sleep(1)
         else:
-            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, send_buf)
+            self.sock_cmd.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, send_buf)
 
 
     def connect_ETController(self, ip: str, port: int=8055, timeout: float=2) -> tuple:
@@ -73,7 +73,7 @@ class BaseEC():
         -------
             [tuple]: (True/False,socket/None),返回的socket套接字已在该模块定义为全局变量
         """
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock_cmd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         
         # -------------------------------------------------------------------------------
@@ -84,12 +84,12 @@ class BaseEC():
         # -------------------------------------------------------------------------------
         
         try:
-            self.sock.connect((ip,port))
+            self.sock_cmd.connect((ip,port))
             self.logger.debug(ip + " connect success")
             self.connect_state = True
-            return (True,self.sock)
+            return (True,self.sock_cmd)
         except Exception as e:
-            self.sock.close()
+            self.sock_cmd.close()
             self.logger.critical(ip + " connect fail")
             quit()
             return (False, None)
@@ -98,11 +98,11 @@ class BaseEC():
     def disconnect_ETController(self) -> None:
         """断开EC机器人的8055端口
         """
-        if(self.sock):
-            self.sock.close()
-            self.sock=None
+        if(self.sock_cmd):
+            self.sock_cmd.close()
+            self.sock_cmd=None
         else:
-            self.sock=None
+            self.sock_cmd=None
             self.logger.critical("socket have already closed")
 
 
@@ -127,9 +127,9 @@ class BaseEC():
         sendStr = "{{\"method\":\"{0}\",\"params\":{1},\"jsonrpc\":\"2.0\",\"id\":{2}}}".format(cmd,params,id)+"\n"
         
         try:
-            self.sock.sendall(bytes(sendStr,"utf-8"))
+            self.sock_cmd.sendall(bytes(sendStr,"utf-8"))
             if ret_flag == 1:               
-                ret = self.sock.recv(1024)
+                ret = self.sock_cmd.recv(1024)
                 jdata = json.loads(str(ret,"utf-8"))
                 if("result" in jdata.keys()):
                     if jdata["id"] != id :
@@ -223,11 +223,13 @@ class BaseEC():
     class JbiRunState(Enum):
         """jbi运行状态
         """
-        JBI_IS_STOP  = 0    # jbi运行停止    
-        JBI_IS_PAUSE = 1    # jbi运行暂停
-        JBI_IS_ESTOP = 2    # jbi运行急停
-        JBI_IS_RUN   = 3    # jbi运行中
-        JBI_IS_ERROR = 4    # jbi运行错误
+        STOP  = 0           # jbi运行停止    
+        PAUSE = 1           # jbi运行暂停
+        ESTOP = 2           # jbi运行急停
+        RUN   = 3           # jbi运行中
+        ERROR = 4           # jbi运行错误
+        DEC_TO_STOP = 5     # jbi减速停止中
+        DEC_TO_PAUSE = 6    # jbi减速暂停中
         
         
     class MlPushResult(Enum):
