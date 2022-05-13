@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-13 16:22:15
+LastEditTime: 2022-05-13 17:47:57
 Description: 
 '''
 import setuptools
@@ -19,7 +19,7 @@ setuptools.setup(
     # 作者
     author = "Elite",
     # 邮箱
-    author_email = "",
+    author_email = "zhangjunjie@elibot.cn",
     # url地址
     url= "https://github.com/JunJie-zhang-o/eliterobot.git",
     # 描述
