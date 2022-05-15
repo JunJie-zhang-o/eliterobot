@@ -53,7 +53,7 @@ class ECInfo(BaseEC):
         return servo_versions
 
 
-    def _get_now_pose(self):
+    def _get_pose(self):
         """获取当前机器人的位姿信息
             旧接口,不推荐使用
             
@@ -69,7 +69,7 @@ class ECInfo(BaseEC):
 
         Args
         ----
-            coord_num (int, optional): -1:世界坐标系, 0~7:用户坐标系号. Defaults to -1.
+            frame_num (int, optional): -1:世界坐标系, 0~7:用户坐标系号. Defaults to -1.
             tool_num (int, optional): -1:当前工具号, 0~7:工具坐标系号. Defaults to -1.
             unit_type (int, None], optional): 返回数据单位类型, 0:角度, 1:弧度, 不填默认弧度. Defaults to None.
 
@@ -102,7 +102,7 @@ class ECInfo(BaseEC):
         return self.get_tcp_pose()
     
 
-    def _get_now_joint(self) -> List[float]:
+    def _get_joint(self) -> List[float]:
         """获取当前机器人的关节信息
         
         Returns
@@ -112,7 +112,7 @@ class ECInfo(BaseEC):
         return self.send_CMD("getRobotPos")
     
 
-    def get_now_joint(self) -> List[float]:
+    def get_joint(self) -> List[float]:
         """获取机器人输出端关节位置信息(为软件计算后的数值)
            
         Returns
@@ -129,7 +129,7 @@ class ECInfo(BaseEC):
     def current_joint(self) -> List[float]:
         """当前关节信息
         """
-        return self.get_now_joint()
+        return self.get_joint()
 
 
     def get_motor_pos(self) -> List[float]:
@@ -192,7 +192,7 @@ class ECInfo(BaseEC):
 
 
     @property
-    def current_coord(self) -> BaseEC.Frame:
+    def current_frame(self) -> BaseEC.Frame:
         """获取机器人当前坐标系
 
         Returns
@@ -202,8 +202,8 @@ class ECInfo(BaseEC):
         return self.Frame(self.send_CMD("getCurrentCoord"))
 
 
-    @current_coord.setter
-    def current_coord(self, coord: int) -> bool:
+    @current_frame.setter
+    def current_frame(self, coord: int) -> bool:
         """指定机器人当前坐标系
 
         Args:
@@ -214,7 +214,7 @@ class ECInfo(BaseEC):
         -------
             bool: True操作成功,False操作失败
         """
-        self.Frame.CART_COORD
+        self.Frame.BASE_FRAME
         return self.send_CMD("setCurrentCoord", {"coord_mode": coord})
 
 
@@ -245,14 +245,14 @@ class ECInfo(BaseEC):
 
 
     @property
-    def tool_num_in_teach_mode(self) -> BaseEC.ToolCoord:
+    def tool_num_in_teach_mode(self) -> BaseEC.ToolNumber:
         """获取示教模式下机器人的当前工具号
 
         Returns
         -------
             BaseEC.ToolCoord: 0~7,示教模式下机器人的当前工具号
         """
-        return self.ToolCoord(self.send_CMD("getToolNumber"))
+        return self.ToolNumber(self.send_CMD("getToolNumber"))
 
 
     @tool_num_in_teach_mode.setter
@@ -271,14 +271,14 @@ class ECInfo(BaseEC):
 
 
     @property
-    def tool_num_in_run_mode(self) -> BaseEC.ToolCoord:
+    def tool_num_in_run_mode(self) -> BaseEC.ToolNumber:
         """获取远程模式下机器人的当前工具号
 
         Returns
         -------
             ToolCoord: 0~7,远程模式下机器人的当前工具号
         """
-        return self.ToolCoord(self.send_CMD("getAutoRunToolNumber"))
+        return self.ToolNumber(self.send_CMD("getAutoRunToolNumber"))
 
 
     @tool_num_in_run_mode.setter
@@ -297,7 +297,7 @@ class ECInfo(BaseEC):
 
 
     def get_tool_coord(self, tool_num: int, unit_type: Optional[int] = None) -> List[float]:
-        """获取工具坐标系的数据
+        """获取工具的位姿坐标数据
 
         Args:
         -----
@@ -318,18 +318,18 @@ class ECInfo(BaseEC):
 
 
     @property
-    def user_num(self) -> BaseEC.UserCoord:
+    def get_userframe_num(self) -> BaseEC.UserFrameNumber:
         """获取当前的用户坐标号
 
         Returns
         -------
             BaseEC.UserCoord: 0~7,当前的用户坐标系
         """
-        return self.UserCoord(self.send_CMD("getUserNumber"))
+        return self.UserFrameNumber(self.send_CMD("getUserNumber"))
 
 
-    @user_num.setter
-    def user_num(self, target_user_num: int) -> bool:
+    @get_userframe_num.setter
+    def get_userframe_num(self, target_user_num: int) -> bool:
         """设置机器人的当前用户坐标号(三种模式统一)
 
         Args:
@@ -343,7 +343,7 @@ class ECInfo(BaseEC):
         return self.send_CMD("setUserNumber", {"user_num": target_user_num})
     
 
-    def user_coord_get(self, user_num: int, unit_type: Optional[int] = None) -> List[float]:
+    def get_userframe(self, user_num: int, unit_type: Optional[int] = None) -> List[float]:
         """获取用户坐标系数据
 
         Args:
@@ -364,7 +364,7 @@ class ECInfo(BaseEC):
             return self.send_CMD("getUserFrame", {"user_num": user_num})
 
 
-    def user_coord_set(self,
+    def set_userframe(self,
                        user_num: int,
                        frame_value: List[float],
                        unit_type: Optional[int] = None) -> bool:
@@ -386,7 +386,7 @@ class ECInfo(BaseEC):
             return self.send_CMD("setUserFrame", {"user_num": user_num, "user_frame": frame_value})
 
 
-    def get_tcp_in_now_user(self, unit_type: Optional[int] = None) -> List[float]:
+    def get_pose_in_user(self, unit_type: Optional[int] = None) -> List[float]:
         """获取当前TCP在当前用户坐标系下的位姿
 
         Args:
@@ -403,7 +403,7 @@ class ECInfo(BaseEC):
             return self.send_CMD("getTcpPoseInUser")
 
 
-    def get_base_flange_in_cart(self, unit_type: Optional[int] = None) -> List[float]:
+    def get_flange_pose(self, unit_type: Optional[int] = None) -> List[float]:
         """当前的法兰盘位姿
 
         Args:
@@ -420,7 +420,7 @@ class ECInfo(BaseEC):
             return self.send_CMD("get_base_flange_pose")
 
 
-    def get_base_flange_in_user(self, unit_type: Optional[int] = None) -> List[float]:
+    def get_flange_pose_in_user(self, unit_type: Optional[int] = None) -> List[float]:
         """法兰盘在当前用户坐标系下的位姿
 
         Args:
@@ -438,7 +438,7 @@ class ECInfo(BaseEC):
 
 
     # todo:版本提示
-    def payload_get(self, tool_num: int) -> List[float]:
+    def get_payload(self, tool_num: int) -> List[float]:
         """获取指定工具号中的负载值和负载质心
 
         Args:
@@ -456,7 +456,7 @@ class ECInfo(BaseEC):
         return [mass, center_mass]
     
 
-    def payload_set(self, tool_num: int, mass: float, barycenter: list) -> bool:
+    def set_payload(self, tool_num: int, mass: float, barycenter: list) -> bool:
         """设置对应工具号的负载值
 
         Args:
@@ -474,7 +474,7 @@ class ECInfo(BaseEC):
 
 
     @property
-    def collision_state(self) -> int:
+    def is_collision(self) -> int:
         """获取碰撞状态(示教器右下角的碰撞状态图标)
 
         Returns
@@ -484,7 +484,7 @@ class ECInfo(BaseEC):
         return self.send_CMD("getCollisionState")
     
 
-    def collision_state_reset(self) -> bool:
+    def clear_collision_alarm(self) -> bool:
         """清楚碰撞状态(启动不能无法复位碰撞状态)
 
         Returns
@@ -547,7 +547,7 @@ class ECInfo(BaseEC):
 
 
     @property
-    def robot_type(self) -> int:
+    def robot_series(self) -> int:
         """机器人类型
 
         Returns
@@ -558,18 +558,18 @@ class ECInfo(BaseEC):
 
 
     @property
-    def robot_subType(self) -> BaseEC.ECSubType:
+    def robot_type(self) -> BaseEC.RobotType:
         """机器人子类型
 
         Returns
         -------
             BaseEC.ECSubType: 3:63,6:66,12:612
         """
-        return self.ECSubType(self.send_CMD("getRobotSubtype"))
+        return self.RobotType(self.send_CMD("getRobotSubtype"))
 
 
     @property
-    def DH(self) -> List[float]:
+    def DH_parameters(self) -> List[float]:
         """机器人的所有连杆值
         """
         link = [self.send_CMD("getDH", {"index": i}) for i in range(11)]
@@ -720,7 +720,7 @@ class ECInfo(BaseEC):
 
 
     @property
-    def current_encode(self) -> List[float]:
+    def encode_values(self) -> List[float]:
         """获取机器人当前编码器值列表
 
         Returns
