@@ -43,7 +43,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
 
     def __repr__(self) -> str:
         if self.connect_state:
-            return "Elite EC6%s, IP:%s, Name:%s"%(self.robot_subType.value, self.robot_ip, self.robot_name)
+            return "Elite EC6%s, IP:%s, Name:%s"%(self.robot_type.value, self.robot_ip, self.robot_name)
         else:
             return "Elite EC__, IP:%s, Name:%s"%(self.robot_ip, self.robot_name)
 

@@ -151,13 +151,13 @@ class BaseEC():
         """坐标系(该值用于jog时指定坐标系等)
         """
         JOINT_FRAME    = 0  # 关节坐标系
-        CART_FRAME     = 1  # 笛卡尔坐标系/世界坐标系
+        BASE_FRAME     = 1  # 笛卡尔坐标系/世界坐标系
         TOOL_FRAME     = 2  # 工具坐标系
         USER_FRAME     = 3  # 用户坐标系
         CYLINDER_FRAME = 4  # 圆柱坐标系
 
 
-    class ToolCoord(Enum):
+    class ToolNumber(Enum):
         """工具坐标系(该值用于设置查看工具坐标系数据时设定坐标系等)
         """
         TOOL0 = 0   # 工具0
@@ -170,7 +170,7 @@ class BaseEC():
         TOOL7 = 7   # 工具7
         
         
-    class UserCoord(Enum):
+    class UserFrameNumber(Enum):
         """工具坐标系(该值用于设置查看用户坐标系数据时设定坐标系等)
         """
         USER0 = 0   # 用户0
@@ -198,7 +198,7 @@ class BaseEC():
         CONTINUOUS_CYCLE = 2    # 连续循环
         
     
-    class ECSubType(Enum):
+    class RobotType(Enum):
         """机器人子类型
         """
         EC63  = 3   # EC63
