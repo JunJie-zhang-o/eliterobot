@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:06:24
+LastEditTime: 2022-05-16 19:56:35
 Description: 
 '''
 
@@ -11,7 +11,8 @@ from ._baseec import BaseEC
 
 
 class ECProfinet(BaseEC):
-    
+    """ECProfinet类,该类实现所有的Profinet相关的数据查询
+    """
 # Profinet服务
     def get_profinet_int_input(self, addr: int, length: int) -> List[int]:
         """获取profinet int 型输入寄存器的值,addr+legnth<=32

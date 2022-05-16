@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-13 16:26:20
+LastEditTime: 2022-05-16 19:53:20
 Description: 
 '''
 import hashlib
@@ -13,7 +13,9 @@ from ._baseec import BaseEC
 
 
 class ECInfo(BaseEC):
-
+    """EC信息查询类,该类实现所有的状态数据查询功能
+    """
+    
     @property
     def soft_version(self) -> str:
         """控制器软件版本号
@@ -64,7 +66,7 @@ class ECInfo(BaseEC):
         return self.send_CMD("getRobotPose")
 
 
-    def get_tcp_pose(self, coord_num: int = -1, tool_num: int = -1, unit_type: Union[int, None] = None) -> List[float]:
+    def get_tcp_pose(self, frame_num: int = -1, tool_num: int = -1, unit_type: Union[int, None] = None) -> List[float]:
         """获取机器人当前位姿信息
 
         Args
@@ -318,7 +320,7 @@ class ECInfo(BaseEC):
 
 
     @property
-    def get_userframe_num(self) -> BaseEC.UserFrameNumber:
+    def userframe_num(self) -> BaseEC.UserFrameNumber:
         """获取当前的用户坐标号
 
         Returns
@@ -328,8 +330,8 @@ class ECInfo(BaseEC):
         return self.UserFrameNumber(self.send_CMD("getUserNumber"))
 
 
-    @get_userframe_num.setter
-    def get_userframe_num(self, target_user_num: int) -> bool:
+    @userframe_num.setter
+    def userframe_num(self, target_user_num: int) -> bool:
         """设置机器人的当前用户坐标号(三种模式统一)
 
         Args:

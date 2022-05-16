@@ -1,7 +1,7 @@
 '''
 Author: ZhangJunJie
 CreateDate: 
-LastEditTime: 2022-05-13 17:27:05
+LastEditTime: 2022-05-16 19:50:18
 Description: 
 '''
 import collections
@@ -98,7 +98,6 @@ class ECMonitor():
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(5)
-            print(self.robot_ip, self._PORT)
             sock.connect((self.robot_ip, self._PORT))
             byte_msg_size = sock.recv(struct.calcsize(self._FMT_MSG_SIZE))
             sock.shutdown(2)

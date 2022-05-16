@@ -2,16 +2,16 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 09:59:21
+LastEditTime: 2022-05-16 19:55:05
 Description: 
 '''
 
-
-from enum import Enum
 from ._baseec import BaseEC
 
 
 class ECMoveML(BaseEC):
+    """ECMoveML类,实现时间戳服务(movml)相关的接口
+    """
     # moveml运动
     def ml_init_head(self, length: int, point_type: int, ref_joint: list, ref_frame: list, ret_flag: int) -> bool:
         """初始化带时间戳轨迹文件运动

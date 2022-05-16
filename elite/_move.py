@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-13 13:51:24
+LastEditTime: 2022-05-16 19:54:39
 Description: 运动和执行任务相关
 '''
 
@@ -11,7 +11,8 @@ from typing import Optional
 
 
 class ECMove(BaseEC):
-    
+    """EC移动相关类,所有的基础移动服务在这里实现
+    """
     
     def stop(self) -> bool:
         """停止机器人运动

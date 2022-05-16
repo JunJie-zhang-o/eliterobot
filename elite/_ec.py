@@ -19,7 +19,8 @@ __recommended_min_robot_version = "3.0.0"
 
 
 class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor):
-    
+    """EC机器人类,该类实现所有的sdk接口以及自定义的方法
+    """
     
     def __init__(self, ip: str = "192.168.1.200",name: Optional[str]="None", auto_connect: bool=False) -> None:
         """初始化EC机器人

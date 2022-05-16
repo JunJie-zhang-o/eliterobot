@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:06:18
+LastEditTime: 2022-05-16 19:56:10
 Description: 
 '''
 import time
@@ -11,6 +11,8 @@ from ._baseec import BaseEC
 from typing import List, Optional
 
 class ECMoveTT(BaseEC):
+    """EC透传服务类,该类实现所有的透传相关接口
+    """
     # 透传运动部分
     def TT_init(self, t: int = 10, lookahead: int = 400, smoothness: float = 0.1, response_enable: Optional[int] = None) -> bool:
         """透传模式初始化

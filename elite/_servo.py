@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-13 17:11:57
+LastEditTime: 2022-05-16 19:53:10
 Description: 伺服相关类
 '''
 
@@ -13,14 +13,8 @@ from elite._baseec import BaseEC
 
 
 class ECServo(BaseEC):
-    """伺服服务
-    """
-    
-
-
-
-
-    
+    """EC伺服相关类,伺服类即与机器人本身的一些运动状态、模式、上下伺服等操作相关
+    """   
     
 #  伺服服务 
     @property

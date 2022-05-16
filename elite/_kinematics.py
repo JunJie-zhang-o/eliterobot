@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:06:10
+LastEditTime: 2022-05-16 19:54:02
 Description: 
 '''
 
@@ -10,9 +10,10 @@ from typing import List,Optional
 from ._baseec import BaseEC
 
 class ECKinematics(BaseEC):
-    
+    """EC运动学类,提供了机器人本身的运动学相关接口
+    """
 # 运动学服务
-    def pose_2_joint(self, pose: List[float] ,ref_joint: Optional[List[float]] = None, unit_type: Optional[int] = None) -> List[float]:
+    def inverse_kinematic(self, pose: List[float] ,ref_joint: Optional[List[float]] = None, unit_type: Optional[int] = None) -> List[float]:
         """运动学逆解
 
         Args
@@ -37,7 +38,7 @@ class ECKinematics(BaseEC):
                 return self.send_CMD("inverseKinematic",{"targetPose":pose,"referencePos":ref_joint})
 
 
-    def joint_2_pose(self, joint: List[float], unit_type: Optional[int] = None) -> List[float]:
+    def forward_kinematic(self, joint: List[float], unit_type: Optional[int] = None) -> List[float]:
         """运动学正解
 
         Args

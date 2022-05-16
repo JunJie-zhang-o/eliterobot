@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-10 10:06:26
+LastEditTime: 2022-05-16 19:57:07
 Description: 
 '''
 
@@ -11,8 +11,9 @@ from typing import List, Optional, Union
 from ._baseec import BaseEC
 
 
-
 class ECVar(BaseEC):
+    """EC变量类,该类实现所有基础变量的查询和修改
+    """
     # 系统变量部分
     def var_get(self, Type: str, addr: int, auto_print: bool=False) -> Optional[Union[float,int,list]]:
         """获取系统变量值
