@@ -38,7 +38,7 @@ if __name__ == "__main__":
         if ec.jbi_run_state("main").value == 0:
             break
         if torque[1] < -50:
-            ec.var_set("B", 0, 2)
+            ec.set_var("B", 0, 2)
             # ec.
 
 
