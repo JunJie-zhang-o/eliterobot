@@ -10,7 +10,8 @@ Welcome to elirobots's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   elirobots/index
+   EC/index
+   feedback
 
 Indices and tables
 ==================
