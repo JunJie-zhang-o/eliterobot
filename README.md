@@ -34,6 +34,11 @@ pip3 install elirobots
 
 # ChangeLog
 
+## 20220518
+
+- 规范var接口
+- 文档持续更新中
+
 ## 20220513
 
 - 发布v0.0.1

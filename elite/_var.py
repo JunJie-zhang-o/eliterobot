@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-17 21:58:11
+LastEditTime: 2022-05-18 11:43:16
 Description: 
 '''
 
@@ -103,7 +103,7 @@ class ECVar(BaseEC):
     
     
     
-class IO(BaseEC):
+class ECIO(BaseEC):
     def get_digital_io(self, address: str, auto_print: bool=False) -> Optional[int]:
         """获取机器人的io状态
 

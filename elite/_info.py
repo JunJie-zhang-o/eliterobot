@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:53:20
+LastEditTime: 2022-05-18 17:12:11
 Description: 
 '''
 import hashlib
@@ -84,9 +84,9 @@ class ECInfo(BaseEC):
         """
 
         if unit_type is not None:
-            return self.send_CMD("get_tcp_pose", {"coordinate_num": coord_num, "tool_num": tool_num, "unit_type": unit_type})
+            return self.send_CMD("get_tcp_pose", {"coordinate_num": frame_num, "tool_num": tool_num, "unit_type": unit_type})
         else:
-            return self.send_CMD("get_tcp_pose", {"coordinate_num": coord_num, "tool_num": tool_num})
+            return self.send_CMD("get_tcp_pose", {"coordinate_num": frame_num, "tool_num": tool_num})
 
     @property
     def current_pose(self) -> List[float]:

@@ -12,13 +12,14 @@ from elite._movett import ECMoveTT as __ECMoveTT
 from elite._profinet import ECProfinet as __ECProfinet
 from elite._servo import ECServo as __ECServo
 from elite._var import ECVar as __ECVar
+from elite._var import ECIO as __ECIO
 
 
 __recommended_min_robot_version = "3.0.0"
 # 所有的接口在v3.0.0进行测试，多数接口在低于该版本时也可以运行，但是并未进行测试
 
 
-class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor):
+class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT, __ECProfinet, __ECVar, __ECMonitor, __ECIO):
     """EC机器人类,该类实现所有的sdk接口以及自定义的方法
     """
     
