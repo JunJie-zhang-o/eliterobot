@@ -6,5 +6,5 @@ class EC
 
    EC/overview
    EC/attributes
-   EC/method
+   EC/method/index
    EC/changelog
