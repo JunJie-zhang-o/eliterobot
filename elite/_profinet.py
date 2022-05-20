@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:56:35
+LastEditTime: 2022-05-20 10:29:25
 Description: 
 '''
 
@@ -44,7 +44,7 @@ class ECProfinet(BaseEC):
         return self.send_CMD("get_profinet_float_input_registers",{"addr":addr,"length":length})
 
 
-    def profinet_int_output_get(self, addr: int, length: int) -> List[int]:
+    def get_profinet_int_output(self, addr: int, length: int) -> List[int]:
         """获取profinet int 型输出寄存器的值,addr+legnth<=32
 
         Args
@@ -59,7 +59,7 @@ class ECProfinet(BaseEC):
         return self.send_CMD("get_profinet_int_output_registers",{"addr":addr,"length":length})
 
 
-    def profinet_int_output_set(self, addr: int, length: int, value: List[int]) -> bool:
+    def set_profinet_int_output(self, addr: int, length: int, value: List[int]) -> bool:
         """设置profinet int 型输出寄存器的值,addr+length<=32
 
         Args
@@ -75,7 +75,7 @@ class ECProfinet(BaseEC):
         return self.send_CMD("set_profinet_int_output_registers", {"addr":addr, "length":length, "value":value})
         
 
-    def profinet_float_output_get(self, addr: int, length: int) -> List[float]:
+    def get_profinet_float_output(self, addr: int, length: int) -> List[float]:
         """获取profinet float 型输出寄存器的值,addr+legnth<=32
 
         Args
@@ -90,7 +90,7 @@ class ECProfinet(BaseEC):
         return self.send_CMD("get_profinet_float_output_registers",{"addr":addr,"length":length})
 
 
-    def profinet_float_output_set(self, addr: int, length: int, value: List[float]):
+    def set_profinet_float_output(self, addr: int, length: int, value: List[float]) -> bool:
         """设置profinet float 型输出寄存器的值,addr+length<=32
 
         Args
