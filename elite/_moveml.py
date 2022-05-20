@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:55:05
+LastEditTime: 2022-05-20 10:42:49
 Description: 
 '''
 
@@ -13,7 +13,7 @@ class ECMoveML(BaseEC):
     """ECMoveML类,实现时间戳服务(movml)相关的接口
     """
     # moveml运动
-    def ml_init_head(self, length: int, point_type: int, ref_joint: list, ref_frame: list, ret_flag: int) -> bool:
+    def ml_init(self, length: int, point_type: int, ref_joint: list, ref_frame: list, ret_flag: int) -> bool:
         """初始化带时间戳轨迹文件运动
            #!传输的第一个点位的时间戳必须为0
            
@@ -48,7 +48,7 @@ class ECMoveML(BaseEC):
         return self.send_CMD("push_pos", {"timestamp":time_stamp, "pos":pos}, ret_flag=self.ml_ret_flag)
 
     
-    def ml_push_end(self) -> bool:
+    def ml_end_push(self) -> bool:
         """停止添加时间戳点位,并返回push结果,push结果正确返回True
 
         Returns
@@ -78,7 +78,7 @@ class ECMoveML(BaseEC):
         return self.send_CMD("flush_trajectory")
      
     
-    def ml_start(self, speed_percent: float=0.1) -> bool:
+    def ml_run(self, speed_percent: float=0.1) -> bool:
         """开始运行带时间戳的轨迹文件
 
         Returns
