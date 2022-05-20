@@ -1,6 +1,6 @@
 # Profinet
 
-### get_profinet_float_input
+### `get_profinet_float_input`
 
 > 获取profinet float 型输入寄存器的值,addr+legnth<=32
 
@@ -20,7 +20,7 @@
 
 ```
 
-### get_profinet_int_input
+### `get_profinet_int_input`
 
 > 获取profinet int 型输入寄存器的值,addr+legnth<=32
 
@@ -40,7 +40,7 @@
 
 ```
 
-### get_profinet_float_output
+### `get_profinet_float_output`
 
 >  获取profinet float 型输出寄存器的值,addr+legnth<=32
 
@@ -60,7 +60,7 @@
 
 ```
 
-### set_profinet_float_output
+### `set_profinet_float_output`
 
 >  设置profinet float 型输出寄存器的值,addr+length<=32
 
@@ -82,7 +82,7 @@
 
 ```
 
-### get_profinet_int_output
+### `get_profinet_int_output`
 
 >  获取profinet int 型输出寄存器的值,addr+legnth<=32
 
@@ -102,7 +102,7 @@
 
 ```
 
-### set_profinet_int_output
+### `set_profinet_int_output`
 
 >  设置profinet int 型输出寄存器的值,addr+length<=32
 
