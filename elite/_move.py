@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:54:39
+LastEditTime: 2022-05-20 11:03:18
 Description: 运动和执行任务相关
 '''
 
@@ -45,7 +45,7 @@ class ECMove(BaseEC):
 
 
     # jbi文件处理
-    def jbi_is_exist(self, file_name: str) -> int:
+    def check_if_jbi_exists(self, file_name: str) -> int:
         """检查jbi文件是否存在
 
         Args
@@ -59,7 +59,7 @@ class ECMove(BaseEC):
         return self.send_CMD("checkJbiExist",{"filename":file_name})
 
 
-    def jbi_run(self, file_name: str) -> bool:
+    def run_jbi(self, file_name: str) -> bool:
         """运行jbi文件
 
         Args
@@ -73,7 +73,7 @@ class ECMove(BaseEC):
         return self.send_CMD("runJbi",{"filename":file_name})
     
     
-    def jbi_run_state(self, file_name: str) -> BaseEC.JbiRunState:
+    def get_jbi_state(self, file_name: str) -> BaseEC.JbiRunState:
         """获取jbi文件运行状态
 
         Args
@@ -261,7 +261,7 @@ class ECMove(BaseEC):
     
     
     # 路点运行部分
-    def path_clear_joint(self) -> bool:
+    def clear_path_joint(self) -> bool:
         """清除路点信息2.0
 
         Returns
@@ -271,7 +271,7 @@ class ECMove(BaseEC):
         return self.send_CMD("clearPathPoint")
 
 
-    def path_move(self) -> int:
+    def move_by_path(self) -> int:
         """路点运动
 
         Returns
@@ -281,7 +281,7 @@ class ECMove(BaseEC):
         return self.send_CMD("moveByPath")
         
         
-    def path_add_point(self, way_point: list, move_type: int,  speed: float,  smooth: int, speed_type: Optional[int]=None,
+    def add_path_point(self, way_point: list, move_type: int,  speed: float,  smooth: int, speed_type: Optional[int]=None,
                        cond_type: Optional[int] = None, cond_num: Optional[int] = None, cond_value: Optional[int] = None) -> bool :
         """添加路点信息
            #!若运动类型为关节运动,则speed_type无效,不推荐使用
@@ -310,7 +310,7 @@ class ECMove(BaseEC):
         return self.send_CMD("addPathPoint",params)
         
     
-    def path_get_index(self) -> int:
+    def get_path_index(self) -> int:
         """获取机器人当前运行点位序号
 
         Returns

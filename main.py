@@ -27,7 +27,7 @@ if __name__ == "__main__":
     ec.wait_stop()
     time.sleep(2)
 
-    ec.jbi_run("main")
+    ec.run_jbi("main")
     all_torque = [[], [], [], [], [], [], [], []]
     while 1:
         time.sleep(0.1)
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         for k, v in enumerate(torque):
             all_torque[k].append(v)
 
-        if ec.jbi_run_state("main").value == 0:
+        if ec.get_jbi_state("main").value == 0:
             break
         if torque[1] < -50:
             ec.set_var("B", 0, 2)
