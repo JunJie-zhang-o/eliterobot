@@ -1,6 +1,10 @@
 # Profinet
 
-### `get_profinet_float_input`
+> Profinet相关接口用于当系统开启prifinet功能后，通过该接口可以获取和控制与外部设备交互的数据
+
+------
+
+### `get_profinet_float_input(addr: int, length: int)`
 
 > 获取profinet float 型输入寄存器的值,addr+legnth<=32
 
@@ -20,7 +24,7 @@
 
 ```
 
-### `get_profinet_int_input`
+### `get_profinet_int_input(addr: int, length: int)`
 
 > 获取profinet int 型输入寄存器的值,addr+legnth<=32
 
@@ -40,7 +44,7 @@
 
 ```
 
-### `get_profinet_float_output`
+### `get_profinet_float_output(addr: int, length: int)`
 
 >  获取profinet float 型输出寄存器的值,addr+legnth<=32
 
@@ -60,7 +64,7 @@
 
 ```
 
-### `set_profinet_float_output`
+### `set_profinet_float_output(addr: int, length: int, values: List[float])`
 
 >  设置profinet float 型输出寄存器的值,addr+length<=32
 
@@ -70,7 +74,7 @@
 >
 > length (int): [1~32]
 >
-> value (List[float]): 寄存器值列表
+> values (List[float]): 寄存器值列表
 
 #### Returns
 
@@ -82,7 +86,7 @@
 
 ```
 
-### `get_profinet_int_output`
+### `get_profinet_int_output(addr: int, length: int)`
 
 >  获取profinet int 型输出寄存器的值,addr+legnth<=32
 
@@ -102,7 +106,7 @@
 
 ```
 
-### `set_profinet_int_output`
+### `set_profinet_int_output(addr: int, length: int, values: List[float])`
 
 >  设置profinet int 型输出寄存器的值,addr+length<=32
 
@@ -112,7 +116,7 @@
 >
 > length (int): [1~32]
 >
-> value (List[int]): 寄存器值列表
+> values (List[int]): 寄存器值列表
 
 #### Returns
 
