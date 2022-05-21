@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:56:10
+LastEditTime: 2022-05-21 17:14:43
 Description: 
 '''
 import time
@@ -46,6 +46,7 @@ class ECMoveTT(BaseEC):
 
     def TT_start_joint(self, joint: List[float]) -> bool:
         """旧接口,设置透传数据,旧接口有时候会丢失数据
+           Deprecated
 
         Args
         ----
