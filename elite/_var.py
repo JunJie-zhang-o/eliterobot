@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-18 11:43:16
+LastEditTime: 2022-05-21 16:48:16
 Description: 
 '''
 
@@ -75,21 +75,21 @@ class ECVar(BaseEC):
             self.logger.error(e)
        
             
-    def var_p_is_used(self, addr: int) -> Optional[int]:
+    def var_p_is_used(self, address: int) -> Optional[int]:
         """查询P变量是否已经打开
 
         Args
         ----
-            addr (int): int 0~255
+            address (int): int 0~255
 
         Returns
         -------
             Optional[int]: 0:未启用,1:已启用
         """
-        if addr < 0 or addr > 255:
+        if address < 0 or address > 255:
             self.logger.error("查询P变量状态的区间错误")
         else:
-            return self.send_CMD("getSysVarPState",{"addr":addr})
+            return self.send_CMD("getSysVarPState",{"addr":address})
 
         
     def save_var(self) -> bool:
@@ -172,64 +172,64 @@ class ECIO(BaseEC):
             if addr < addr_min or addr > addr_max:
                 self.logger.error("获取数据的变量区间错误")
             else:
-                return self.send_CMD(var_cmd[Type],{"addr":addr,"status":value})
+                return self.send_CMD(var_cmd[Type],{"addr":addr, "status":value})
         except Exception as e:
             self.logger.error(e)
         
         
-    def get_register(self, addr: int, length: int) -> List[int]:
+    def get_registers(self, address: int, length: int) -> List[int]:
         """读取连续多个的虚拟寄存器(M)
 
         Args
         ----
-            addr (int): 起始地址
+            address (int): 起始地址
             length (int): 读取长度(位数)
 
         Returns
         -------
             List[int]: 虚拟IO值列表(每16个虚拟io值用一个十进制整数进行表示,列表长度为len)
         """
-        return self.send_CMD("getRegisters",{"addr":addr,"len":length})
+        return self.send_CMD("getRegisters",{"addr":address, "len":length})
         
         
-    def get_analog_input(self, addr: int) -> float:
+    def get_analog_input(self, address: int) -> float:
         """获取模拟量输入
 
         Args
         ----
-            addr (int): 0~2
+            address (int): 0~2
 
         Returns
         -------
             float: 模拟量输入电压 -10~10
         """
-        return self.send_CMD("getAnalogInput", {"addr":addr})
+        return self.send_CMD("getAnalogInput", {"addr":address})
 
 
-    def get_analog_output(self, addr: int) -> float:
+    def get_analog_output(self, address: int) -> float:
         """获取模拟量输出
 
         Args
         ----
-            addr (int): 0~4
+            address (int): 0~4
 
         Returns
         -------
             float: 模拟量输出电压
         """
-        return self.send_CMD("get_analog_output", {"addr":addr})
+        return self.send_CMD("get_analog_output", {"addr":address})
     
     
-    def set_analog_output(self, addr: int, value: float) -> bool:
+    def set_analog_output(self, address: int, value: float) -> bool:
         """设置模拟量输出
 
         Args
         ----
-            addr (int): 模拟量地址 0~4
+            address (int): 模拟量地址 0~4
             value (float): 模拟量值 -10~10,addr=4时,value=[0,10]
 
         Returns
         -------
             bool: 成功 True,失败 False
         """
-        return self.send_CMD("setAnalogOutput", {"addr":addr, "value":value})
+        return self.send_CMD("setAnalogOutput", {"addr":address, "value":value})
