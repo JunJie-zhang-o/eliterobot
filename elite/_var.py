@@ -75,7 +75,7 @@ class ECVar(BaseEC):
             self.logger.error(e)
        
             
-    def var_p_is_used(self, address: int) -> Optional[int]:
+    def var_p_is_opened(self, address: int) -> Optional[int]:
         """查询P变量是否已经打开
 
         Args
@@ -226,7 +226,7 @@ class ECIO(BaseEC):
         Args
         ----
             address (int): 模拟量地址 0~4
-            value (float): 模拟量值 -10~10,addr=4时,value=[0,10]
+            value (float): 模拟量值 -10~10,address=4时,value=[0,10]
 
         Returns
         -------
