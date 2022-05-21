@@ -1,42 +1,14 @@
 # 变量与IO
 
-### `var_p_is_used(addr: int)`
-
-> 查询P变量是否已经打开
+> 变量与IO相关接口用于查询和设置系统全局变量B、I、D、P、V以及数字量IO、模拟量IO和虚拟io(即M变量，连续多个M变量即为寄存器)
 >
+> 其中P变量用于存储机器人的关节数据，即对应机器人6个关节的数据，使用Python中的list数据类型即可
+>
+> 其中V变量用于存储机器人笛卡尔空间位姿，使用Python中的list数据类型即可
+>
+> 以上所有变量中，P变量和V变量再使用前需要打开该变量，否则对应的地址是无法使用的
 
-#### Args
-
-> addr (int): int 0~255
-
-#### Returns
-> Optional[int]: 0:未启用,1:已启用
-
-#### Examples
-
-```python
-from elite import EC
-
-ec = EC(ip="172.16.11.251", auto_connect=True)
-```
-
-### `save_var()`
-
-> 保存系统变量数据,
-
-#### Args
-
-> 
-
-#### Returns
-
-> bool: 成功 True,失败 False
-
-#### Examples
-
-```python
-
-```
+------
 
 ###  `set_var(address: str, value:Union[int, list])`
 
@@ -75,6 +47,46 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
+
+```
+
+### `var_p_is_opened(address: int)`
+
+> 查询P变量是否已经打开
+
+#### Args
+
+> address(int): int 0~255
+
+#### Returns
+
+> Optional[int]: 0:未启用,1:已启用
+
+#### Examples
+
+```python
+from elite import EC
+
+ec = EC(ip="172.16.11.251", auto_connect=True)
+```
+
+### `save_var()`
+
+> 保存系统变量数据
+>
+> 该接口用于，当使用示教器上的备份变量信息前，如果进行变量数据的修改后，用该接口刷新保存变量数据以便于备份的数据为最新数据
+
+#### Args
+
+> 
+
+#### Returns
+
+> bool: 成功 True,失败 False
+
+#### Examples
+
+```
 
 ```
 
@@ -118,13 +130,13 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 
 ```
 
-### `get_register(addr: int, length: int)`
+### `get_registers(address: int, length: int)`
 
 >  读取连续多个的虚拟寄存器(M)
 
 #### Args
 
-> addr (int): 起始地址
+> address(int): 起始地址
 >
 > length (int): 读取长度(位数)
 
@@ -138,13 +150,13 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 
 ```
 
-### `get_analog_input(addr: int)`
+### `get_analog_input(address: int)`
 
 >  获取模拟量输入
 
 #### Args
 
-> addr (int): 0~2
+> address(int): 0~2
 
 #### Returns
 
@@ -156,13 +168,13 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 
 ```
 
-### `get_analog_output(addr: int)`
+### `get_analog_output(address: int)`
 
 >  获取模拟量输入
 
 #### Args
 
-> addr (int): 0~4
+> address(int): 0~4
 
 #### Returns
 
@@ -174,15 +186,15 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 
 ```
 
-### `set_analog_output(addr: int, value: float)`
+### `set_analog_output(address: int, value: float)`
 
 >  获取模拟量输入
 
 #### Args
 
-> addr (int): 模拟量地址 0~4
+> address(int): 模拟量地址 0~4
 >
-> value (float): 模拟量值 -10~10,addr=4时,value=[0,10]
+> value (float): 模拟量值 -10~10,address=4时,value=[0,10]
 
 #### Returns
 
