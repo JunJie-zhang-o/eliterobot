@@ -1,6 +1,65 @@
 # Move
 
-### `jbi_if_jbi_exists`
+>  移动相关指令
+>
+>  move_line和move_joint为单条非阻塞运动接口，而move_by_path可以运动多条运动指令，并且以上指令在运行时会在示教器上显示对应的运行jbi。
+
+------
+### `stop()`
+
+>  停止机器人运动
+
+#### Args
+
+> 
+
+#### Returns
+
+>  bool: True操作成功,False操作失败
+
+#### Examples
+
+```
+
+```
+
+### `run()`
+
+>  机器人自动运行,暂停后重新运行使用
+
+#### Args
+
+> 
+
+#### Returns
+
+>  bool: True操作成功,False操作失败
+
+#### Examples
+
+```
+
+```
+
+### `pause()`
+
+>  机器人暂停
+
+#### Args
+
+> 
+
+#### Returns
+
+>  bool: True操作成功,False操作失败
+
+#### Examples
+
+```
+
+```
+
+### `check_if_jbi_exists(file_name: str)`
 
 > 检查jbi文件是否存在
 
@@ -18,7 +77,7 @@
 
 ```
 
-### `run_jbi`
+### `run_jbi(file_name: str)`
 
 > 运行jbi文件
 
@@ -36,7 +95,7 @@
 
 ```
 
-### `get_jbi_state`
+### `get_jbi_state(file_name: str)`
 
 > 获取jbi文件运行状态
 
@@ -54,7 +113,7 @@
 
 ```
 
-### `jog`
+### `jog(index: int, speed: Optional[float] = None)`
 
 > jog运动
 >
@@ -78,61 +137,7 @@
 
 ```
 
-### `stop`
-
->  停止机器人运动
-
-#### Args
-
-> 
-
-#### Returns
-
->  bool: True操作成功,False操作失败
-
-#### Examples
-
-```
-
-```
-
-### `run`
-
->  机器人自动运行,暂停后重新运行使用
-
-#### Args
-
-> 
-
-#### Returns
-
->  bool: True操作成功,False操作失败
-
-#### Examples
-
-```
-
-```
-
-### `pause`
-
->  机器人暂停
-
-#### Args
-
-> 
-
-#### Returns
-
->  bool: True操作成功,False操作失败
-
-#### Examples
-
-```
-
-```
-
-### `move_joint`
+### `move_joint(target_joint: list, speed: float, acc: Optional[int] = None, dec: Optional[int] = None, cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None)`
 
 > 关节运动,运行后需要根据机器人运动状态去判断是否运动结束
 
@@ -162,7 +167,7 @@
 
 ```
 
-### `move_line`
+### `move_line(target_joint: list, speed: int, speed_type: Optional[int]=None, acc: Optional[int] = None, dec: Optional[int] = None, cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None)`
 
 > 直线运动,运行后需根据机器人运动状态去判断是否运动结束
 
@@ -194,7 +199,7 @@
 
 ```
 
-### `move_line_in_coord`
+### `move_line_in_coord(target_user_pose: list, speed: float, speed_type: int, user_coord: list, acc: int=0, dec: int=0, cond_type: Optional[int]=None, cond_num: Optional[int]=None, cond_value: Optional[int]=None, unit_type: Optional[int]=None)`
 
 > 指定坐标系下直线运动
 
@@ -230,7 +235,7 @@
 
 ```
 
-### `move_speed_j`
+### `move_speed_j(vj: list, acc: float, t: float)`
 
 > 关节匀速运动
 
@@ -252,7 +257,7 @@
 
 ```
 
-### `move_speed_l`
+### `move_speed_l(v: list, acc: float, t: float, arot: Optional[float]=None)`
 
 > 直线匀速运动
 
@@ -276,7 +281,7 @@
 
 ```
 
-### `move_stop_speed_j`
+### `move_stop_speed_j(stop_acc:int)`
 
 > 停止关节匀速运动
 
@@ -294,7 +299,7 @@
 
 ```
 
-### `move_stop_speed_l`
+### `move_stop_speed_l(stop_acc:int)`
 
 > 停止直线匀速运动
 
@@ -312,7 +317,7 @@
 
 ```
 
-### `add_path_point`
+### `add_path_point(way_point: list, move_type:int, speed: float,smooth: int,speed_type:Optional[int]=None,cond_type: Optional[int] = None, cond_num: Optional[int] = None, cond_value: Optional[int] = None)`
 
 >  添加路点信息
 >
@@ -346,7 +351,7 @@
 
 ```
 
-### `clear_path_joint`
+### `clear_path_point()`
 
 >  清除路点信息2.0
 
@@ -364,7 +369,7 @@
 
 ```
 
-### `get_path_index`
+### `get_running_path_index()`
 
 >  获取机器人当前运行点位序号
 
@@ -382,7 +387,7 @@
 
 ```
 
-### `move_by_path`
+### `move_by_path()`
 
 >  路点运动
 
