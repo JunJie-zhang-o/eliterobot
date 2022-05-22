@@ -107,7 +107,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
                         time.sleep(0.2)
                         # 循环上伺服
                         while 1:
-                            self.servo_status_set()
+                            self.set_servo_status()
                             if self.servo_status == True:
                                 self.logger.debug("servo status set success")
                                 return True
@@ -117,10 +117,10 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
                     self.logger.debug("MotorStatus sync success")
                     time.sleep(0.2)
                     # 上伺服
-                    if self.servo_status_set():
+                    if self.set_servo_status():
                         # 循环上伺服
                         while 1:
-                            self.servo_status_set()
+                            self.set_servo_status()
                             if self.servo_status == True:
                                 self.logger.debug("servo status set success")
                                 return True

@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-16 19:53:10
+LastEditTime: 2022-05-22 16:34:53
 Description: 伺服相关类
 '''
 
@@ -74,7 +74,7 @@ class ECServo(BaseEC):
         return self.send_CMD("getServoStatus")
     
     
-    def servo_status_set(self, _status:int = 1) -> bool:
+    def set_servo_status(self, _status:int = 1) -> bool:
         """设置机器人伺服状态
 
         Args
@@ -120,11 +120,11 @@ class ECServo(BaseEC):
 
 
     def calibrate_encoder_zero(self) -> bool:
-        """编码器零位校准,如果可以校准则返回True并不在乎校准结果,如果不可以校准,返回error,
+        """编码器零位校准,如果可以校准则返回True并不在乎校准结果,如果不可以校准,返回False,
 
         Returns
         -------
-            bool: 成功 True,失败 False
+            bool: 可以校准 True,无法校准 False
         """
         return self.send_CMD("calibrate_encoder_zero_position")
        
