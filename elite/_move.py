@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-20 11:03:18
+LastEditTime: 2022-05-22 14:39:05
 Description: 运动和执行任务相关
 '''
 
@@ -261,7 +261,7 @@ class ECMove(BaseEC):
     
     
     # 路点运行部分
-    def clear_path_joint(self) -> bool:
+    def clear_path_point(self) -> bool:
         """清除路点信息2.0
 
         Returns
@@ -310,7 +310,7 @@ class ECMove(BaseEC):
         return self.send_CMD("addPathPoint",params)
         
     
-    def get_path_index(self) -> int:
+    def get_running_path_index(self) -> int:
         """获取机器人当前运行点位序号
 
         Returns
