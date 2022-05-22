@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-20 17:13:32
+LastEditTime: 2022-05-22 17:09:56
 Description: 
 '''
 import hashlib
@@ -576,6 +576,9 @@ class ECInfo(BaseEC):
     @property
     def DH_parameters(self) -> List[float]:
         """机器人的所有连杆值
+
+        Returns:
+            List[float]: 所有的连杆数据
         """
         link = [self.send_CMD("getDH", {"index": i}) for i in range(11)]
         return link
@@ -676,27 +679,39 @@ class ECInfo(BaseEC):
     @property
     def joint_speed(self) -> List[float]:
         """当前各关节速度
+
+        Returns:
+            List[float]: 各关节速度
         """
         return self.send_CMD("get_joint_speed")
 
 
     @property
-    def tcp_speed(self) -> List[float]:
-        """当前TCP速度
+    def tcp_speed(self) -> float:
+        """当前的tcp速度
+
+        Returns:
+            float: 对应tcp速度
         """
         return self.send_CMD("get_tcp_speed")
 
 
     @property
-    def joint_acc(self) -> List[float]:
+    def joint_acc(self) -> float:
         """当前各关节加速度
+
+        Returns:
+            float: 各关节加速度
         """
         return self.send_CMD("get_joint_acc")
 
 
     @property
-    def tcp_acc(self) -> List[float]:
+    def tcp_acc(self) -> float:
         """当前TCP加速度
+
+        Returns:
+            float: 对应tcp加速度
         """
         return self.send_CMD("get_tcp_acc")
 
@@ -750,7 +765,7 @@ class ECInfo(BaseEC):
 
     @property
     def green_tool_btn_func(self) -> BaseEC.ToolBtnFunc:
-        """机器人末端蓝色按钮功能
+        """机器人末端绿色按钮功能
 
         Returns
         -------
