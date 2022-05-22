@@ -81,10 +81,12 @@ class ECMoveML(BaseEC):
     def ml_run(self, speed_percent: float=0.1) -> bool:
         """开始运行带时间戳的轨迹文件
 
-        Args:
+        Args
+        ----
             speed_percent (float, optional): 轨迹速度百分比,即以原始速度乘百分比的速度运动.单位 %, 范围>=0.1. Defaults to 0.1.
 
-        Returns:
+        Returns
+        -------
             bool: True操作成功,False操作失败
         """
         return self.send_CMD("start_trajectory",{"speed_percent":speed_percent})
