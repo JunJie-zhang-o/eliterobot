@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-18 11:24:30
+LastEditTime: 2022-06-16 22:44:15
 Description: 
 '''
 import setuptools
@@ -15,7 +15,7 @@ setuptools.setup(
     # 项目名称
     name = "elirobots",
     # 版本号
-    version = "0.0.2",
+    version = "0.0.3",
     # 作者
     author = "Elite",
     # 邮箱
