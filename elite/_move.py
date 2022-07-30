@@ -9,10 +9,23 @@ Description: 运动和执行任务相关
 from ._baseec import BaseEC
 from typing import Optional
 
-
+import time
 class ECMove(BaseEC):
     """EC移动相关类,所有的基础移动服务在这里实现
     """
+    
+    def __wait_stop(self) -> None:
+        while True:
+            time.sleep(0.005)
+            result = self.RobotState(self.send_CMD("getRobotState"))
+            if result != self.RobotState.PLAY:
+                if result != self.RobotState.STOP:
+                    str_ = ["","state of robot in the pause","state of robot in the emergency stop","","state of robot in the error","state of robot in the collision"]
+                    self.logger.debug(str_[result.value])
+                    break
+                break
+        self.logger.info("The robot has stopped")
+    
     
     def stop(self) -> bool:
         """停止机器人运动
@@ -109,7 +122,8 @@ class ECMove(BaseEC):
     
     def move_joint(self, target_joint: list, speed: float, 
                    acc: Optional[int] = None, dec: Optional[int] = None, 
-                   cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None) -> bool:
+                   cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None,
+                   block: Optional[bool] = True) -> bool:
         """关节运动,运行后需要根据机器人运动状态去判断是否运动结束
 
         Args
@@ -121,6 +135,7 @@ class ECMove(BaseEC):
             cond_type (int, optional): IO类型,0为输入,1为输出
             cond_num (int, optional): IO地址,0~63
             cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令
+            block (bool, optional): True:阻塞运动, False:非阻塞运动. Defaults to True.
 
         Returns
         -------
@@ -132,13 +147,20 @@ class ECMove(BaseEC):
         if cond_type is not None: params["cond_type"] = cond_type
         if cond_num is not None: params["cond_num"] = cond_num
         if cond_value is not None: params["cond_value"] = cond_value
-
-        return self.send_CMD("moveByJoint",params)
+        if block:
+            move_ret = self.send_CMD("moveByJoint",params)
+            if move_ret:
+                self.__wait_stop()
+            return move_ret 
+        else:
+            return self.send_CMD("moveByJoint",params)
+            
     
     
     def move_line(self, target_joint: list, speed: int, 
                   speed_type: Optional[int]=None, acc: Optional[int] = None, dec: Optional[int] = None, 
-                  cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None) -> bool:
+                  cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None,
+                   block: Optional[bool] = True) -> bool:
         """直线运动,运行后需根据机器人运动状态去判断是否运动结束
 
         Args
@@ -151,6 +173,7 @@ class ECMove(BaseEC):
             cond_type (int, optional): IO类型,0为输入,1为输出.
             cond_num (int, optional): IO地址,0~63.
             cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令.
+            block (bool, optional): True:阻塞运动, False:非阻塞运动. Defaults to True.
 
         Returns
         -------
@@ -163,7 +186,13 @@ class ECMove(BaseEC):
         if cond_type is not None: params["cond_type"] = cond_type
         if cond_num is not None: params["cond_num"] = cond_num
         if cond_value is not None: params["cond_value"] = cond_value
-        return self.send_CMD("moveByLine", params)
+        if block:
+            move_ret = self.send_CMD("moveByLine", params)
+            if move_ret:
+                self.__wait_stop()
+            return move_ret 
+        else:
+            return self.send_CMD("moveByLine", params)
     
     
     def move_speed_j(self, vj: list, acc: float, t: float) -> bool:
