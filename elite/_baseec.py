@@ -16,7 +16,7 @@ from typing import Any, Optional
 from loguru import logger
 
 class BaseEC():
-    
+    send_recv_info_print = False
     
     def _log_init(self, ip):
         """日志格式化
@@ -24,7 +24,7 @@ class BaseEC():
         logger.remove()
         self.logger = copy.deepcopy(logger)
         # format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + self.ip + "</yellow>|line:{line}| <level>{level} | {message}</level>"
-        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_ip: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) +" | {message}</level>"
+        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_IP: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) +" | {message}</level>"
         self.logger.add(sys.stderr, format = format_str)
         logger.add(sys.stdout)
         pass    
@@ -84,6 +84,7 @@ class BaseEC():
         # -------------------------------------------------------------------------------
         
         try:
+            self.sock_cmd.settimeout(5)
             self.sock_cmd.connect((ip,port))
             self.logger.debug(ip + " connect success")
             self.connect_state = True
@@ -125,12 +126,19 @@ class BaseEC():
         else:
             params = json.dumps(params)
         sendStr = "{{\"method\":\"{0}\",\"params\":{1},\"jsonrpc\":\"2.0\",\"id\":{2}}}".format(cmd,params,id)+"\n"
-        
+        if self.send_recv_info_print:   # print send msg
+            self.logger.info(f"Send: Func is {cmd}")
+            self.logger.info(sendStr)
         try:
             self.sock_cmd.sendall(bytes(sendStr,"utf-8"))
             if ret_flag == 1:               
                 ret = self.sock_cmd.recv(1024)
                 jdata = json.loads(str(ret,"utf-8"))
+
+                if self.send_recv_info_print:   # print recv nsg
+                    self.logger.info(f"Recv: Func is {cmd}")
+                    self.logger.info(jdata)
+
                 if("result" in jdata.keys()):
                     if jdata["id"] != id :
                         self.logger.warning("id match fail,send_id={0},recv_id={0}",id,jdata["id"])
