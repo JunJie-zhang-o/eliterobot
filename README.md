@@ -36,6 +36,12 @@ pip3 install elirobots
 
 # ChangeLog
 
+## 20220730
+
+- movj和movl接口默认阻塞执行
+- 添加发送和接受消息的flag，便于用户查看实际进行通讯的报文内容
+- 
+
 ## 20220518
 
 - 规范var接口
