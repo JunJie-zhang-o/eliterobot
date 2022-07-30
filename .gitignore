@@ -5,3 +5,5 @@ build
 dist
 elirobot.egg-info
 elirobots.egg-info
+
+*.log
