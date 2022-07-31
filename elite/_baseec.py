@@ -150,7 +150,7 @@ class BaseEC():
                 else:
                     return (False,None,None)
         except Exception as e:
-            self.logger.error(f"CMD: {cmd} | {e}")
+            self.logger.error(f"CMD: {cmd} |Exception: {e}")
             quit()
             return (False,None,None)
 
