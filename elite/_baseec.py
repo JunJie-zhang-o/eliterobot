@@ -145,7 +145,7 @@ class BaseEC():
                     return (json.loads(jdata["result"]))
                 
                 elif("error" in jdata.keys()):
-                    self.logger.error(f"CMD: {cmd} | {jdata['error']['message']}")
+                    self.logger.warning(f"CMD: {cmd} | {jdata['error']['message']}")
                     return (False,jdata["error"]['message'],jdata["id"])
                 else:
                     return (False,None,None)
