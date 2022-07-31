@@ -18,6 +18,8 @@ from loguru import logger
 class BaseEC():
     send_recv_info_print = False
     
+    # logger.remove(0)
+    
     def _log_init(self, ip):
         """日志格式化
         """
@@ -28,6 +30,20 @@ class BaseEC():
         self.logger.add(sys.stderr, format = format_str)
         logger.add(sys.stdout)
         pass    
+
+
+    def __log_init(self, ip):
+
+        def _filter(record):
+            """存在多个stderr的输出,根据log_name进行过滤显示
+            """
+            if record["extra"].get("ip") == ip:
+                return True
+            return False
+
+        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_IP: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) + "|<cyan>{name}</cyan>:<cyan>{line}</cyan> - | {message}</level>"
+        logger.add(sys.stderr, format=format_str, filter=_filter, colorize=True)
+        self.logger = logger.bind(ip=ip,).opt(depth=1)
 
 
     def us_sleep(self, t):
