@@ -137,7 +137,7 @@ class BaseEC():
 
                 if self.send_recv_info_print:   # print recv nsg
                     self.logger.info(f"Recv: Func is {cmd}")
-                    self.logger.info(jdata)
+                    self.logger.info(str(ret,"utf-8"))
 
                 if("result" in jdata.keys()):
                     if jdata["id"] != id :
