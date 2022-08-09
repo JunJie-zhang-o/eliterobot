@@ -14,8 +14,12 @@ import sys
 import time
 from typing import Any, Optional
 from loguru import logger
+import threading
 
 class BaseEC():
+
+    _communicate_lock = threading.Lock()
+
     send_recv_info_print = False
     
     # logger.remove(0)
@@ -146,25 +150,26 @@ class BaseEC():
             self.logger.info(f"Send: Func is {cmd}")
             self.logger.info(sendStr)
         try:
-            self.sock_cmd.sendall(bytes(sendStr,"utf-8"))
-            if ret_flag == 1:               
-                ret = self.sock_cmd.recv(1024)
-                jdata = json.loads(str(ret,"utf-8"))
+            with BaseEC._communicate_lock :
+                self.sock_cmd.sendall(bytes(sendStr,"utf-8"))
+                if ret_flag == 1:               
+                    ret = self.sock_cmd.recv(1024)
+                    jdata = json.loads(str(ret,"utf-8"))
 
-                if self.send_recv_info_print:   # print recv nsg
-                    self.logger.info(f"Recv: Func is {cmd}")
-                    self.logger.info(str(ret,"utf-8"))
+                    if self.send_recv_info_print:   # print recv nsg
+                        self.logger.info(f"Recv: Func is {cmd}")
+                        self.logger.info(str(ret,"utf-8"))
 
-                if("result" in jdata.keys()):
-                    if jdata["id"] != id :
-                        self.logger.warning("id match fail,send_id={0},recv_id={0}",id,jdata["id"])
-                    return (json.loads(jdata["result"]))
-                
-                elif("error" in jdata.keys()):
-                    self.logger.warning(f"CMD: {cmd} | {jdata['error']['message']}")
-                    return (False,jdata["error"]['message'],jdata["id"])
-                else:
-                    return (False,None,None)
+                    if("result" in jdata.keys()):
+                        if jdata["id"] != id :
+                            self.logger.warning("id match fail,send_id={0},recv_id={0}",id,jdata["id"])
+                        return (json.loads(jdata["result"]))
+                    
+                    elif("error" in jdata.keys()):
+                        self.logger.warning(f"CMD: {cmd} | {jdata['error']['message']}")
+                        return (False,jdata["error"]['message'],jdata["id"])
+                    else:
+                        return (False,None,None)
         except Exception as e:
             self.logger.error(f"CMD: {cmd} |Exception: {e}")
             quit()
