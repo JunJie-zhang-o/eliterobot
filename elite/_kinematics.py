@@ -88,9 +88,9 @@ class ECKinematics(BaseEC):
             List[float]: 求逆后的结果
         """
         if unit_type is not None:
-            return self.send_CMD("poseInv",{"pose1":pose, "unit_type":unit_type})
+            return self.send_CMD("poseInv",{"pose":pose, "unit_type":unit_type})
         else:
-            return self.send_CMD("poseInv",{"pose1":pose})
+            return self.send_CMD("poseInv",{"pose":pose})
         
         
     def convert_base_pose_to_user_pose(self, base_pose: List[float], user_num: int, unit_type: Optional[int] = None) -> List[float]:
