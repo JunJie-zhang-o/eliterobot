@@ -193,6 +193,45 @@ class ECMove(BaseEC):
             return move_ret 
         else:
             return self.send_CMD("moveByLine", params)
+
+
+    def move_arc(self, mid_pos: list, target_pos: list, speed: int, 
+                  speed_type: Optional[int]=None, acc: Optional[int] = None, dec: Optional[int] = None, 
+                  cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None,
+                   block: Optional[bool] = True) -> bool:
+        """直线运动,运行后需根据机器人运动状态去判断是否运动结束
+
+        Args
+        ----
+            target_joint (list): 目标关节数据
+            speed (int): 直线速度: 1-3000;旋转角速度: 1-300;
+            speed_type (int, optional): 0为V直线速度,1为VR旋转角速度,2为AV,3为AVR. Defaults to None.
+            acc (int, optional): 加速度,不写默认为0. Defaults to None.
+            dec (int, optional): 减速度,不写默认为0. Defaults to None.
+            cond_type (int, optional): IO类型,0为输入,1为输出.
+            cond_num (int, optional): IO地址,0~63.
+            cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令.
+            block (bool, optional): True:阻塞运动, False:非阻塞运动. Defaults to True.
+
+        Returns
+        -------
+            bool: 执行结果,True: 执行成功,False: 执行失败
+        """
+        params = {"midPos":mid_pos, "targetPos":target_pos, "speed":speed}
+        if speed_type is not None: params["speed_type"] = speed_type
+        if acc is not None: params["acc"] = acc
+        if dec is not None: params["dec"] = dec
+        if cond_type is not None: params["cond_type"] = cond_type
+        if cond_num is not None: params["cond_num"] = cond_num
+        if cond_value is not None: params["cond_value"] = cond_value
+        print(params)
+        if block:
+            move_ret = self.send_CMD("moveByArc", params)
+            if move_ret:
+                self.__wait_stop()
+            return move_ret 
+        else:
+            return self.send_CMD("moveByArc", params)
     
     
     def move_speed_j(self, vj: list, acc: float, t: float) -> bool:
