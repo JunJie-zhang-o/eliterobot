@@ -15,7 +15,7 @@ setuptools.setup(
     # 项目名称
     name = "elirobots",
     # 版本号
-    version = "0.0.3",
+    version = "0.0.4",
     # 作者
     author = "Elite",
     # 邮箱
