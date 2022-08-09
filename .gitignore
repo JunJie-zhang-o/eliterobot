@@ -7,3 +7,5 @@ elirobot.egg-info
 elirobots.egg-info
 
 *.log
+
+main.py
