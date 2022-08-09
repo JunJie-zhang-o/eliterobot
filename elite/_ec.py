@@ -96,7 +96,7 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
                     clear_num += 1
                     if clear_num > 4:
                         self.logger.error("The Alarm can't clear,Please check the robot state")
-                        quit()
+                        return False
                 self.logger.debug("Alarm clear success")
                 time.sleep(0.2)
                 # 编码器同步
@@ -126,7 +126,6 @@ class _EC(__ECServo, __ECInfo, __ECKinematics, __ECMove, __ECMoveML, __ECMoveTT,
                                 return True
                             time.sleep(0.02)
         self.logger.error(state_str[state])
-        quit()
         return False
 
 
