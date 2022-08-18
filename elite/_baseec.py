@@ -12,7 +12,7 @@ import json
 import socket
 import sys
 import time
-from typing import Any, Optional
+from typing import Any, Optional, TextIO
 from loguru import logger
 import threading
 
@@ -24,7 +24,7 @@ class BaseEC():
     
     # logger.remove(0)
     
-    def _log_init(self, ip):
+    def __log_init(self, ip):
         """日志格式化
         """
         logger.remove()
@@ -36,7 +36,7 @@ class BaseEC():
         pass    
 
 
-    def __log_init(self, ip):
+    def _log_init(self, ip):
 
         def _filter(record):
             """存在多个stderr的输出,根据log_name进行过滤显示
@@ -45,9 +45,33 @@ class BaseEC():
                 return True
             return False
 
-        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_IP: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) + "|<cyan>{name}</cyan>:<cyan>{line}</cyan> - | {message}</level>"
+        logger.remove()
+        # format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_IP: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) + "|<cyan>{name}</cyan>:<cyan>{line}</cyan> - | {message}</level>"
+        format_str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> |<yellow>Robot_IP: " + ip + "</yellow>| <level>" + "{level:<8}".ljust(7) +" | {message}</level>"
         logger.add(sys.stderr, format=format_str, filter=_filter, colorize=True)
-        self.logger = logger.bind(ip=ip,).opt(depth=1)
+        # self.logger = logger.bind(ip=ip,).opt(depth=1)
+        self.logger = logger.bind(ip=ip,)
+
+        # self.__log_filter = _filter
+        # self.__log_format = format_str
+        _logger_add = self.logger.add
+        def _add(*args, **kwargs):
+            if "format" not in kwargs: kwargs["format"] = format_str
+            if "filter" not in kwargs: kwargs["filter"] = _filter
+            _logger_add(*args, **kwargs)
+
+        self.logger.add = _add
+        
+            
+        
+
+
+    def logger_add(self, *args, **kwargs):
+        """你可以像类似loguru一样add sink
+        """
+        if "format" not in kwargs: kwargs["format"]=self.__log_format
+        if "filter" not in kwargs: kwargs["filter"]=self.__log_filter
+        self.logger.add(*args, **kwargs)
 
 
     def us_sleep(self, t):
