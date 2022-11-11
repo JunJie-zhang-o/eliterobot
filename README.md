@@ -21,8 +21,6 @@ pip3 install elirobots
 
 ## Docs
 
-[elirobots docs](https://www.yuque.com/docs/share/45a1e736-02ce-4b0f-b7ba-f11e97df9fc5?#)
-
 [elirobots docs](https://eliterobot.readthedocs.io/zh_CN/latest/)
 
 ## Features
