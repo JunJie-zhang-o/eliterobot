@@ -2,7 +2,7 @@
 Author: Elite_zhangjunjie
 CreateDate: 
 LastEditors: Elite_zhangjunjie
-LastEditTime: 2022-05-22 14:39:05
+LastEditTime: 2022-11-11 17:25:15
 Description: 运动和执行任务相关
 '''
 
@@ -123,7 +123,7 @@ class ECMove(BaseEC):
     def move_joint(self, target_joint: list, speed: float, 
                    acc: Optional[int] = None, dec: Optional[int] = None, 
                    cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None,
-                   block: Optional[bool] = True) -> bool:
+                   cond_judgement:Optional[str]=None, block: Optional[bool] = True) -> bool:
         """关节运动,运行后需要根据机器人运动状态去判断是否运动结束
 
         Args
@@ -147,6 +147,7 @@ class ECMove(BaseEC):
         if cond_type is not None: params["cond_type"] = cond_type
         if cond_num is not None: params["cond_num"] = cond_num
         if cond_value is not None: params["cond_value"] = cond_value
+        if cond_judgement is not None: params["cond_judgement"] = cond_judgement
         if block:
             move_ret = self.send_CMD("moveByJoint",params)
             if move_ret:
@@ -160,7 +161,7 @@ class ECMove(BaseEC):
     def move_line(self, target_joint: list, speed: int, 
                   speed_type: Optional[int]=None, acc: Optional[int] = None, dec: Optional[int] = None, 
                   cond_type: Optional[int]=None, cond_num: Optional[int]=None,cond_value: Optional[int]=None,
-                   block: Optional[bool] = True) -> bool:
+                  cond_judgment:Optional[str]=None, block: Optional[bool] = True) -> bool:
         """直线运动,运行后需根据机器人运动状态去判断是否运动结束
 
         Args
@@ -186,6 +187,7 @@ class ECMove(BaseEC):
         if cond_type is not None: params["cond_type"] = cond_type
         if cond_num is not None: params["cond_num"] = cond_num
         if cond_value is not None: params["cond_value"] = cond_value
+        if cond_judgment is not None: params["cond_judgment"] = cond_judgment
         if block:
             move_ret = self.send_CMD("moveByLine", params)
             if move_ret:
@@ -349,8 +351,9 @@ class ECMove(BaseEC):
         return self.send_CMD("moveByPath")
         
         
-    def add_path_point(self, way_point: list, move_type: int,  speed: float,  smooth: int, speed_type: Optional[int]=None,
-                       cond_type: Optional[int] = None, cond_num: Optional[int] = None, cond_value: Optional[int] = None) -> bool :
+    def add_path_point(self, way_point: list, move_type: int,  speed: float, acc:int=20, dec:int=20,
+                       smooth: int=None, circular_radius: int=None, speed_type: Optional[int]=None,
+                       cond_type: Optional[int] = None, cond_num: Optional[int] = None, cond_value: Optional[int] = None, cond_judgment:Optional[str] = None) -> bool :
         """添加路点信息
            #!若运动类型为关节运动,则speed_type无效,不推荐使用
 
@@ -360,7 +363,10 @@ class ECMove(BaseEC):
             move_type (int): 0 关节运动,1 直线运动(旋转速度由直线速度决定),2 直线运动(直线速度由旋转速度决定),3 圆弧运动
             speed_type (int): 速度类型,0:V(直线速度)对应speed为[1,3000],1:VR(旋转角速度)对应speed为[1-300],2:AV(绝对直线速度)对应[min_AV,max_AV],3:AVR(绝对旋转角速度)对应[min_AVR,max_AVR]
             speed (float): 运动速度,无speed_type参数时,对应关节速度[1,100]、直线及圆弧速度[1,3000],旋转速度[1,300]
-            smooth (int): 平滑度,0~7
+            acc(int, optional): 加速度, Defaults to 20.
+            dec(int, optional): 减速度, Defaults to 20.
+            smooth (int, optional): 平滑度, 0~7, 该参数与交融半径选择其一就好, 该参数逐渐废弃, Defaults to 0.
+            circular_radius (int, optional): 交融半径, 0~2147483647,该值根据不同的点位从而计算出不同的交融半径, Defaults to 0.
             cond_type (int, optional): IO类型,0为输入,1为输出.
             cond_num (int, optional): IO地址,0~63.
             cond_value (int, optional): IO状态,0/1,io状态一致时,立即放弃该运动,执行下一条指令.
@@ -369,11 +375,14 @@ class ECMove(BaseEC):
         -------
             bool: True操作成功,False操作失败
         """
-        params = {"wayPoint":way_point, "moveType":move_type, "speed":speed, "smooth":smooth}
+        params = {"wayPoint":way_point, "moveType":move_type, "speed":speed, "acc":acc, "dec":dec}
+        if smooth is not None: params["smooth"] = smooth
+        if circular_radius is not None: params["circular_radius"] = circular_radius
         if speed_type is not None: params["speed_type"] = speed_type
         if cond_type is not None: params["cond_type"] = cond_type
         if cond_num is not None: params["cond_num"] = cond_num
         if cond_value is not None: params["cond_value"] = cond_value
+        if cond_judgment is not None: params["cond_judgment"] = cond_judgment
         
         return self.send_CMD("addPathPoint",params)
         
