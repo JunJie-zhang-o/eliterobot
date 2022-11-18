@@ -81,7 +81,9 @@ print(ec.current_pose)
 #### Examples
 
 ```
-
+from elite import EC
+ec = EC(ip="192.168.1.200", auto_connect=True)
+print(ec.current_joint)
 ```
 
 ### `is_collision`
