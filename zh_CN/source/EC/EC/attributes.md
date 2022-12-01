@@ -546,57 +546,105 @@ print(ec.tool_frame_num_in_teach_mode.value)
 
 ### `user_frame_num`
 
->  
+>  获取当前的用户坐标号
 
 #### Returns
 
-> 
+> BaseEC.UserCoord: 0~7,当前的用户坐标系
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.user_frame_num.value)
+#0
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.user_frame_num = 1
+print(ec.user_frame_num.value)
+#1
 
 ```
 
 ### `collision_enable_status`
 
->  
+>  碰撞检测使能状态
 
 #### Returns
 
-> 
+> int: 0:未使能,1:使能
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.collision_enable_status)
+#1
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.collision_enable_status = 0
+print(ec.collision_enable_status)
+#0
 
 ```
 
 ### `collision_sensitivity`
 
->  
+>  获取碰撞灵敏度
 
 #### Returns
 
-> 
+> int: 当前的碰撞灵敏度
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.collision_sensitivity)
+#20
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.collision_sensitivity = 30
+print(ec.collision_sensitivity)
+#30
 
 ```
 
 ### `blue_tool_btn_func`
 
->  
+>  机器人末端蓝色按钮功能
 
 #### Returns
 
-> 
+> 0禁用, 1拖动, 2记点
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.blue_tool_btn_func.value)
+#1
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.blue_tool_btn_func = 2
+print(ec.blue_tool_btn_func.value)
+#2
 
 ```
 
