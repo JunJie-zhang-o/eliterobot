@@ -80,10 +80,11 @@ print(ec.current_pose)
 
 #### Examples
 
-```
+```python
 from elite import EC
 ec = EC(ip="192.168.1.200", auto_connect=True)
 print(ec.current_joint)
+#[2.2394111570247937, -88.71203512396694, 86.98476239669418, -90.42357673267327, 88.55785891089108, -8.615717821782178]
 ```
 
 ### `is_collision`
@@ -96,8 +97,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.is_collision)
+#0
 ```
 
 ### `robot_series`
@@ -110,8 +114,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.robot_series)
+#62
 ```
 
 ### `robot_type`
@@ -138,8 +145,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.DH_parameters)
+#[183.979, 184.313, 478.323, 127.187, 360.04, 116.313, 116.479, 104.639, 0, 0, 0]
 ```
 
 ### `remote_sys_password`
@@ -166,8 +176,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.joint_speed)
+#[0, 0, 0, 0, 0, 0]
 ```
 
 ### `tcp_speed`
@@ -180,8 +193,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.tcp_speed)
+#0
 ```
 
 ### `joint_acc`
@@ -194,8 +210,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.joint_acc)
+#[0, 0, 0, 0, 0, 0]
 ```
 
 ### `tcp_acc`
@@ -208,8 +227,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.tcp_acc)
+#0
 ```
 
 ### `motor_speed`
@@ -222,8 +244,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.motor_speed)
+#[0, 0, 0, 0, 0, 0]
 ```
 
 ### `joint_torques`
@@ -236,8 +261,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.joint_torques)
+#[10, 121, -126, 42, -54, 10]
 ```
 
 ### encoder_values
@@ -250,8 +278,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.encoder_values)
+#[1386435, 687197, 335234, 579671, 877084, 609711]
 ```
 
 ### `alarm_info`
@@ -264,8 +295,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.alarm_info)
+#[],[],[],[],[0-1030-45]
 ```
 
 ### `TT_state`
@@ -278,8 +312,11 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.TT_state)
+#0
 ```
 
 ### `mode`
@@ -292,14 +329,9 @@ print(ec.current_joint)
 
 #### Examples
 
-```
-
-```
-
 ```python
 from elite import EC
 ec = EC(ip="192.168.1.200", auto_connect=True)
-
 print(ec.mode)  
 #  RobotMode.TECH
 ```
@@ -313,10 +345,6 @@ print(ec.mode)
 > RobotState: 0停止,1暂停,2急停,3运行,4错误,5碰撞
 
 #### Examples
-
-```
-
-```
 
 ```python
 from elite import EC
@@ -336,8 +364,11 @@ print(ec.state)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.estop_status)
+#0
 ```
 
 ### `servo_status`
@@ -350,8 +381,11 @@ print(ec.state)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.servo_status)
+#False
 ```
 
 ### `sync_status`
@@ -364,8 +398,11 @@ print(ec.state)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.sync_status)
+#False
 ```
 
 
@@ -400,7 +437,19 @@ print(ec.run_speed)
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.run_speed)
+#10
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.run_speed = 20
+print(ec.run_speed)
+#20
 
 ```
 
@@ -414,35 +463,70 @@ print(ec.run_speed)
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.current_frame)
+#Frame.JOINT_FRAME
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.current_frame = 1
+print(ec.current_frame)
+#Frame.BASE_FRAME
 
 ```
 
 ### `cycle_mode`
 
->  
+>  机器人当前的循环模式
 
 #### Returns
 
-> 
+> BaseEC.CycleMode: 0:单步,1:单循环,2:连续循环
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.cycle_mode.value)
+#0
 
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.cycle_mode = 2
+print(ec.cycle_mode.value)
+#2
 ```
 
 ### `tool_frame_num_in_teach_mode`
 
->  
+>  获取示教模式下机器人的当前工具号
 
 #### Returns
 
-> 
+> BaseEC.ToolCoord: 0~7,示教模式下机器人的当前工具号
 
 #### Examples
 
-```
+```python
+#读
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.tool_frame_num_in_teach_mode.value)
+#0
+
+#写
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+ec.tool_frame_num_in_teach_mode = 1
+print(ec.tool_frame_num_in_teach_mode.value)
+#1
 
 ```
 
