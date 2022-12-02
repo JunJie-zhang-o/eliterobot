@@ -19,8 +19,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.stop())
+#True
 ```
 
 ### `run()`
@@ -37,8 +40,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.run())
+#True
 ```
 
 ### `pause()`
@@ -55,17 +61,20 @@
 
 #### Examples
 
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.pause())
+#True
 ```
 
-```
-
-### `check_if_jbi_exists(file_name: str)`
+### `check_if_jbi_exists(file_name = str)`
 
 > 检查jbi文件是否存在
 
 #### Args
 
-> file_name (str): jbi文件名
+> str: jbi文件名
 
 #### Returns
 
@@ -73,17 +82,20 @@
 
 #### Examples
 
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.check_if_jbi_exists(file_name = "34"))
+#1
 ```
 
-```
-
-### `run_jbi(file_name: str)`
+### `run_jbi(file_name = str)`
 
 > 运行jbi文件
 
 #### Args
 
-> file_name (str): 待运行文件名
+> str: 待运行文件名
 
 #### Returns
 
@@ -92,16 +104,19 @@
 #### Examples
 
 ```
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.run_jbi(file_name = "34"))
+#True
 ```
 
-### `get_jbi_state(file_name: str)`
+### `get_jbi_state(file_name = str)`
 
 > 获取jbi文件运行状态
 
 #### Args
 
-> file_name (str): jbi文件名
+> str: jbi文件名
 
 #### Returns
 
@@ -109,8 +124,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_jbi_state(file_name = "34").value)
+#0
 ```
 
 ### `jog(index: int, speed: Optional[float] = None)`
@@ -133,8 +151,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.jog(0,10))
+#True
 ```
 
 ### `move_joint(target_joint: list, speed: float, acc: Optional[int] = None, dec: Optional[int] = None, cond_type: Optional[int] = None, cond_num: Optional[int] = None,cond_value: Optional[int] = None)`
