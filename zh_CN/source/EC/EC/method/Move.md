@@ -103,7 +103,7 @@ print(ec.check_if_jbi_exists(file_name = "34"))
 
 #### Examples
 
-```
+```python
 from elite import EC 
 ec = EC(ip="192.168.1.200",auto_connect=True)
 print(ec.run_jbi(file_name = "34"))

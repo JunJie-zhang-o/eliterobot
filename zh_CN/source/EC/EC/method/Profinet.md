@@ -20,8 +20,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_profinet_float_input(1,5))
+#[0, 0, 0, 0, 0]
 ```
 
 ### `get_profinet_int_input(addr: int, length: int)`
@@ -40,8 +43,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_profinet_int_input(1,5))
+#[0, 0, 0, 0, 0]
 ```
 
 ### `get_profinet_float_output(addr: int, length: int)`
@@ -60,8 +66,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_profinet_float_output(1,5))
+#[0, 0, 0, 0, 0]
 ```
 
 ### `set_profinet_float_output(addr: int, length: int, values: List[float])`
@@ -82,8 +91,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_profinet_float_output(1,5))
+#[0, 0, 0, 0, 0]
 ```
 
 ### `get_profinet_int_output(addr: int, length: int)`
@@ -102,8 +114,11 @@
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_profinet_int_output(1,5))
+#[0, 0, 0, 0, 0]
 ```
 
 ### `set_profinet_int_output(addr: int, length: int, values: List[float])`

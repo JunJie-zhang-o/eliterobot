@@ -27,7 +27,10 @@
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.set_var("B001",1))
+#1
 ```
 
 ### `get_var(address: str, auto_print: bool=False)`
@@ -47,7 +50,11 @@
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_var("B001",1))
+#B001的值为2.000
+#2
 ```
 
 ### `var_p_is_opened(address: int)`
@@ -65,9 +72,10 @@
 #### Examples
 
 ```python
-from elite import EC
-
-ec = EC(ip="172.16.11.251", auto_connect=True)
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.var_p_is_opened(0))
+#1
 ```
 
 ### `save_var()`
@@ -86,8 +94,11 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 
 #### Examples
 
-```
-
+```python
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.save_var())
+#True
 ```
 
 ### `get_digital_io(address: str, auto_print: bool=False)`
@@ -107,7 +118,11 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_digital_io("Y0",1))
+#Y0变量的值为0
+#0
 ```
 
 ### `set_digital_io(address:str, value: int)`
@@ -127,7 +142,10 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.set_digital_io("Y0",1))
+#True
 ```
 
 ### `get_registers(address: int, length: int)`
@@ -147,7 +165,10 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_registers(528,3))
+#[0, 0, 0]
 ```
 
 ### `get_analog_input(address: int)`
@@ -165,7 +186,10 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_analog_input(1))
+#0.029296875
 ```
 
 ### `get_analog_output(address: int)`
@@ -183,7 +207,10 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.get_analog_output(1))
+#0
 ```
 
 ### `set_analog_output(address: int, value: float)`
@@ -203,6 +230,9 @@ ec = EC(ip="172.16.11.251", auto_connect=True)
 #### Examples
 
 ```python
-
+from elite import EC 
+ec = EC(ip="192.168.1.200",auto_connect=True)
+print(ec.set_analog_output(1,1)
+#True
 ```
 
