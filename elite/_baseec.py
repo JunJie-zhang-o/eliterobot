@@ -48,7 +48,7 @@ class BaseEC():
         self.logger = Logger(core=Core(), exception=None, depth=0, record=False, lazy=False, colors=False,
                 raw=False,
                 capture=True,
-                patcher=None,
+                patchers=None,
                 extra={"ip":ip},)
 
         #* ------
