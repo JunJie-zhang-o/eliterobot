@@ -15,7 +15,7 @@ setuptools.setup(
     # 项目名称
     name = "elirobots",
     # 版本号
-    version = "0.0.6",
+    version = "0.0.7",
     # 作者
     author = "Elite",
     # 邮箱
@@ -28,7 +28,7 @@ setuptools.setup(
     long_description = long_description,
     long_description_content_type = "text/markdown",
     # 安装依赖
-    install_requires = ["loguru>=0.6.0"],
+    install_requires = ["loguru==0.6.0"],
     # 自动发现根目录中所有的子包,find_packages()只能打包python包，python包中只有.py而不包括这个文件夹下 其他的数据文件。并且根目录下的.py文件不会被打包进去
     packages = setuptools.find_packages(
         # where=".",
